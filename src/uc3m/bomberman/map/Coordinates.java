@@ -7,7 +7,10 @@ public class Coordinates{
 		this.x = x > 0 ? x : 0;
 		this.y = y > 0 ? y : 0;
 	}
-	public Coordinates rounded(){
+	public Coordinates tenthsToUnits(){
 		return new Coordinates(x%10, y%10);
+	}
+	public Coordinates unitsToTenths(){
+		return new Coordinates(x*10, y*10);
 	}
 }

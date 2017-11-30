@@ -13,20 +13,37 @@ public class Tile /*TODO extends Entity*/{
 	/**
 	 * This method sets the type of the tile and its walkability
 	 * @param type
-	 * @return
+	 * @return tyle type (char)
 	 */
-	public char setTileType(String type){
-		switch(type.toLowerCase()){
+	public void setTileType(String sType){
+		switch(sType.toLowerCase()){
 		case "brick": 
 			walkable = false;
-			return TILE_TYPE[0];
+			type = TILE_TYPE[0];
+			break;
 		case "wall": 
 			walkable = false;
-			return TILE_TYPE[1];
+			type = TILE_TYPE[1];
+			break;
 		case "green":
+			type = TILE_TYPE[2];
 			walkable = true;
+			break;
 		default: 
-			return TILE_TYPE[2];
+			type = TILE_TYPE[1];
+			walkable = false;
+		}
+	}
+	public String getType(){
+		switch(type){
+		case 'B':
+			return "brick";
+		case 'W':
+			return "wall";
+		case 'G':
+			return "green";
+		default:
+			return "wall";
 		}
 	}
 	/*TODO getters y setters*/
