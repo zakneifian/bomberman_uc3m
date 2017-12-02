@@ -2,11 +2,11 @@ package uc3m.bomberman.map;
 
 import uc3m.bomberman.entity.Entity;
 
-public class Tile /*TODO extends Entity*/{
+public class Tile /*TODO extends Entity, si eso*/{
 	private final char TILE_TYPE[] = {'B', 'W', 'G'};
 	private char type;
 	private boolean walkable;
-	private Entity inside;
+	private Entity/*Upgrade*/ inside;
 	public Tile(String type){
 		setTileType(type);
 	}
@@ -46,5 +46,13 @@ public class Tile /*TODO extends Entity*/{
 			return "wall";
 		}
 	}
-	/*TODO getters y setters*/
+	public boolean isWalkable() {
+		return walkable;
+	}
+	public Entity getInside() {
+		return inside;
+	}
+	public void setInside(Entity/*Upgrade*/ inside) {
+		this.inside = inside;
+	}
 }

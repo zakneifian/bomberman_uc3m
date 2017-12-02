@@ -16,6 +16,7 @@ public class Map{
 			}
 		}
 		//Create Walls
+		//TODO las casillas de arriba no pueden tener ladrillos, para que no se quede atrapado el jugador
 		for(int ii = 0; ii < map.length; ii++){
 			for(int jj = 0; jj < map[ii].length; jj++){
 				if (ii == 0 || jj == 0 || ii == map.length - 1 || jj == map[ii].length - 1 || (ii % 2 == 0 && jj % 2 == 0))
@@ -44,14 +45,28 @@ public class Map{
 		return getTypeAt(coords.x, coords.y);
 	}
 	//Set type of tile
-	public void setTypeAt(int x, int y, String type){
+	private void setTypeAt(int x, int y, String type){
 		map[x][y] = new Tile(type);
 	}
-	public void setTypeAt(Coordinates coords, String type){
+	private void setTypeAt(Coordinates coords, String type){
 		setTypeAt(coords.x, coords.y, type);
 	}
 	//
 	public Coordinates getDimensions(){
 		return new Coordinates(dim.x, dim.y);
+	}
+	/*
+	 * public void addInside(int x, int y, Upgrade upg){
+	 * 		map[x][y].setInside(upg);
+	 * }
+	 * public Entity destroyTile(int x, int y){
+	 * 		setTypeAt(x, y, "green");
+	 * 		return map[x][y].getInside();
+	 */
+	public boolean isWalkableAt(Coordinates coords){
+		return isWalkableAt(coords.x, coords.y);
+	}
+	public boolean isWalkableAt(int x, int y){
+		return map[x][y].isWalkable();
 	}
 }
