@@ -1,7 +1,7 @@
 package uc3m.bomberman.entity;
 
 import uc3m.bomberman.map.*;
-//TODO esta clase no está hecha. Solo tiene definido el constructor para poder probarla
+//TODO esta clase no esta¡ hecha. Solo tiene definido el constructor para poder probarla
 public class Player extends MovableEntity{
 	private int bombs = 1;
 	private int maxBombs = 1;
@@ -16,6 +16,6 @@ public class Player extends MovableEntity{
 
 	@Override
 	public void onCollision(Entity col) {
-		// TODO Colisión con otras entidades		
+		// TODO Colision con otras entidades		
 	}
 }
