@@ -1,21 +1,19 @@
 package uc3m.bomberman.map;
 
-import uc3m.bomberman.entity.Entity;
-
-public class Tile /*TODO extends Entity, si eso*/{
+public class Tile{
 	private final char TILE_TYPE[] = {'B', 'W', 'G'};
 	private char type;
 	private boolean walkable;
-	private Entity/*Upgrade*/ inside;
+	
 	public Tile(String type){
-		setTileType(type);
+		setType(type);
 	}
 	/**
 	 * This method sets the type of the tile and its walkability
 	 * @param type
 	 * @return tyle type (char)
 	 */
-	public void setTileType(String sType){
+	public void setType(String sType){
 		switch(sType.toLowerCase()){
 		case "brick": 
 			walkable = false;
@@ -27,6 +25,10 @@ public class Tile /*TODO extends Entity, si eso*/{
 			break;
 		case "green":
 			type = TILE_TYPE[2];
+			walkable = true;
+			break;
+		case "explosion":
+			type = TILE_TYPE[3];
 			walkable = true;
 			break;
 		default: 
@@ -49,10 +51,16 @@ public class Tile /*TODO extends Entity, si eso*/{
 	public boolean isWalkable() {
 		return walkable;
 	}
-	public Entity getInside() {
-		return inside;
-	}
-	public void setInside(Entity/*Upgrade*/ inside) {
-		this.inside = inside;
+	public String getSprite() {
+		switch(type){
+		case 'G':
+			return null;
+		case 'B':
+			return "bricks.gif";
+		case 'W':
+			return "wall.gif";
+		default:
+			return "wall.gif";
+		}
 	}
 }

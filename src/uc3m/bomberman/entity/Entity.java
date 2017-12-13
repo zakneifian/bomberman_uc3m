@@ -54,6 +54,9 @@ public class Entity{
 			}
 		}
 	}
+	public void kill(){
+		alive = false;
+	}
 	public void takeHeal(int heal){
 		if(heal > 0){
 			hp += heal;

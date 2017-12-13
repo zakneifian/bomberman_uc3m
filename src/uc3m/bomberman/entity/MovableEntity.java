@@ -55,7 +55,7 @@ public abstract class MovableEntity extends Entity{
 		
 	}
 	
-	public void moveTowards(Direction dir){
+	public void moveTowards(Direction dir, Map map){
 		switch(dir){
 		case UP:
 			if((this.position.y-=speed) < 0) this.position.y = 0;
@@ -71,6 +71,7 @@ public abstract class MovableEntity extends Entity{
 			break;
 		}
 	}
+	
 	public int getSpeed() {
 		return speed;
 	}

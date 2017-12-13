@@ -39,16 +39,18 @@ public class Map{
 	}
 	//Get type of file
 	public String getTypeAt(int x, int y){
-		return map[x][y].getType();
+		if(x < map.length && y < map[x].length)
+			return map[x][y].getType();
+		return "null";
 	}
 	public String getTypeAt(Coordinates coords){
 		return getTypeAt(coords.x, coords.y);
 	}
 	//Set type of tile
-	private void setTypeAt(int x, int y, String type){
+	public void setTypeAt(int x, int y, String type){
 		map[x][y] = new Tile(type);
 	}
-	private void setTypeAt(Coordinates coords, String type){
+	public void setTypeAt(Coordinates coords, String type){
 		setTypeAt(coords.x, coords.y, type);
 	}
 	//
@@ -68,5 +70,12 @@ public class Map{
 	}
 	public boolean isWalkableAt(int x, int y){
 		return map[x][y].isWalkable();
+	}
+	
+	public String getSpriteAt(Coordinates coords){
+		return getSpriteAt(coords.x, coords.y);
+	}
+	public String getSpriteAt(int x, int y){
+		return map[x][y].getSprite();
 	}
 }

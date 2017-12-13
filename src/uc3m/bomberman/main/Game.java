@@ -8,7 +8,6 @@ public class Game{
 	private Entity[] entities;
 	private Player player;
 	private int level = 0;
-	private int enemyCount;
 	
 	public Game(int dim, String playerName){
 		for(int ii = 0; ii < map.length; ii++){
@@ -31,6 +30,8 @@ public class Game{
 		return true;
 	}
 	public boolean addEntity(Entity entity){
+		if(!entity.isAlive())
+			return false;
 		for(int ii = 0; ii < entities.length; ii++){
 			if(entities[ii].getId() == entity.getId())
 				return false;
@@ -50,6 +51,7 @@ public class Game{
 	public boolean removeEntity(int id){
 		for(int ii = 0; ii < entities.length; ii++){
 			if(entities[ii].getId() == id){
+				entities[ii].kill();
 				Entity[] arr = new Entity[entities.length-1];
 				System.arraycopy(entities, 0, arr, 0, ii);
 				System.arraycopy(entities, ii+1, arr, ii, arr.length-ii);
@@ -58,6 +60,9 @@ public class Game{
 			}
 		}
 		return false;
+	}
+	
+	public void explodeAt(Coordinates bombPos){
 	}
 	public Entity[] getEntities(){
 		return entities;

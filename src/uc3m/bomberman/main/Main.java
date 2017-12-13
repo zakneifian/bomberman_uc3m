@@ -11,6 +11,7 @@ public class Main{
 	private final static double FPS = 60.0;
 	
 	private static int NEXT_ID = 0;
+	
 	public static final int nextId(){
 		return ++NEXT_ID;
 	}
@@ -38,6 +39,8 @@ public class Main{
 			}
 			if(deltaTimeTick > 1000.0/FPS){ //Esto son los ticks
 				eventHandler(game, board);
+				tickHandler(game, board);
+				tileEffects(game, board);
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
 			}
@@ -73,17 +76,8 @@ public class Main{
 		board.gb_repaintBoard();
 		for(int ii = 0; ii < map.getDimensions().x; ii++){
 			for(int jj = 0; jj < map.getDimensions().y; jj++){
-				switch(map.getTypeAt(ii, jj)){
-				case "green":
-					board.gb_setSquareColor(ii, jj, 200, 255, 150);
-					break;
-				case "wall":
-					board.gb_setSquareImage(ii, jj, "wall.gif");
-					break;
-				case "brick":
-					board.gb_setSquareImage(ii, jj, "bricks.gif");
-					break;
-				}
+				board.gb_setSquareColor(ii, jj, 200, 255, 150);
+				board.gb_setSquareImage(ii, jj, map.getSpriteAt(ii, jj));
 			}
 		}		
 	}
@@ -125,7 +119,7 @@ public class Main{
 			if(current.isAlive()){
 				board.gb_addSprite(current.getId(), current.getSprite(), true);
 				board.gb_moveSpriteCoord(current.getId(), current.getPosition().x, current.getPosition().y);
-				board.gb_setSpriteVisible(current.getId(), true);
+				board.gb_setSpriteVisible(current.getId(), current.isAlive());
 			}
 		}
 	}
@@ -140,32 +134,41 @@ public class Main{
 			}
 			switch(action){
 			case "up":
-				game.getPlayer().moveTowards(Direction.UP);
-				if(game.getPlayer().collides(game.getMap())){
-					game.getPlayer().moveTowards(Direction.DOWN);
-				}
+				game.getPlayer().moveTowards(Direction.UP, game.getMap());
+				if(game.getPlayer().collides(game.getMap()))
+					game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
 				break;
 			case "down":
-				game.getPlayer().moveTowards(Direction.DOWN);
-				if(game.getPlayer().collides(game.getMap())){
-					game.getPlayer().moveTowards(Direction.UP);
-				}
+				game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
+				if(game.getPlayer().collides(game.getMap()))
+					game.getPlayer().moveTowards(Direction.UP, game.getMap());
 				break;
 			case "left":
-				game.getPlayer().moveTowards(Direction.LEFT);
-				if(game.getPlayer().collides(game.getMap())){
-					game.getPlayer().moveTowards(Direction.RIGHT);
-				}
+				game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
+				if(game.getPlayer().collides(game.getMap()))
+					game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
 				break;
 			case "right":
-				game.getPlayer().moveTowards(Direction.RIGHT);
-				if(game.getPlayer().collides(game.getMap())){
-					game.getPlayer().moveTowards(Direction.LEFT);
-				}
+				game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
+				if(game.getPlayer().collides(game.getMap()))
+					game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
 				break;
 			case "space":
 				if (game.getPlayer().getBombs() > 0) {
-					addEntity(game, board, new Bomb(nextId()));
+					addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
+				}
+			}
+		}
+	}
+	public static void tickHandler(Game game, GameBoardGUI board){
+		for(int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			//Handle the ticks
+			if(current instanceof Bomb){
+				Bomb bomb = (Bomb) current;
+				if(bomb.tick()){
+					game.explodeAt(bomb.getPosition());
+					removeEntity(game, board, bomb);
 				}
 			}
 		}
