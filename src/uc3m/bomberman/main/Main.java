@@ -70,6 +70,7 @@ public class Main{
 		renderStats(game, board);
 	}
 	public static void renderMap(Map map, GameBoardGUI board){
+		board.gb_repaintBoard();
 		for(int ii = 0; ii < map.getDimensions().x; ii++){
 			for(int jj = 0; jj < map.getDimensions().y; jj++){
 				switch(map.getTypeAt(ii, jj)){
@@ -122,7 +123,6 @@ public class Main{
 		for(int ii = 0; ii < entities.length; ii++){
 			Entity current = entities[ii];
 			if(current.isAlive()){
-				board.gb_repaintBoard();
 				board.gb_addSprite(current.getId(), current.getSprite(), true);
 				board.gb_moveSpriteCoord(current.getId(), current.getPosition().x, current.getPosition().y);
 				board.gb_setSpriteVisible(current.getId(), true);
