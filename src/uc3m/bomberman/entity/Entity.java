@@ -5,8 +5,7 @@ import uc3m.bomberman.map.*;
 public class Entity{
 	private int id = 1;
 	private String sprite;
-	private int maxHp = 1;
-	
+	protected int maxHp = 1;	
 	protected Coordinates position;
 	protected int hp;
 	protected boolean alive = true;
@@ -81,5 +80,11 @@ public class Entity{
 	}
 	public int getId(){
 		return id;
+	}
+	public int getMaxHp() {
+		return maxHp;
+	}
+	public int getHp() {
+		return hp;
 	}
 }

@@ -4,26 +4,32 @@ import uc3m.bomberman.entity.*;
 import uc3m.bomberman.map.*;
 
 public class Game{
-	private Map map;
+	private Map[] map = new Map[15];
 	private Entity[] entities;
 	private Player player;
-	private int level;
+	private int level = 0;
 	private int enemyCount;
 	
 	public Game(int dim, String playerName){
-		map = new Map(dim);
+		for(int ii = 0; ii < map.length; ii++){
+			map[ii] = new Map(dim);
+		}
 		player = new Player(Main.nextId(), playerName);
 		entities = new Entity[1];
 		entities[0] = player;
 	}
 	public Map getMap(){
-		return map;
+		return map[level];
 	}
 	/**
 	 * retorna si se ha podido añadir la entidad o no (si la id ya existe o no)
 	 * @param entity
 	 * @return
 	 */
+	public boolean nextMap(){
+		//TODO implementar
+		return true;
+	}
 	public boolean addEntity(Entity entity){
 		for(int ii = 0; ii < entities.length; ii++){
 			if(entities[ii].getId() == entity.getId())

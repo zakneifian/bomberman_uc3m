@@ -4,7 +4,7 @@ import uc3m.bomberman.map.*;
 
 public abstract class MovableEntity extends Entity{
 
-	private int speed = 1;
+	protected int speed = 2;
 	
 	public MovableEntity(int id, String path, int maxHp, Coordinates position) {
 		super(id, path, maxHp, position);
@@ -35,5 +35,8 @@ public abstract class MovableEntity extends Entity{
 			this.position.x+=speed;
 			break;
 		}
+	}
+	public int getSpeed() {
+		return speed;
 	}
 }

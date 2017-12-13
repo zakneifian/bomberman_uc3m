@@ -25,11 +25,11 @@ public class Map{
 		}		
 		//Create Bricks
 		int brickCount = 0;
-		while ( brickCount < 50) {
+		while ( brickCount < nBricks) {
 			for(int ii = 0; ii < map.length; ii++){
 				for(int jj = 0; jj < map[ii].length; jj++){
 					//if there is no bricks or walls we will set a brick with a given probability of dim*dim
-					if (!(ii == 1 && jj == 1) && brickCount < 50 && (map[ii][jj] == null || map[ii][jj].getType().equals("green")) && (Math.random() < 2.0/(dim.x*dim.y - brickCount - 1))) {
+					if (!(ii == 1 && jj == 1) && !(ii == 1 && jj == 2) && !(ii == 2 && jj == 1) && brickCount < nBricks && (map[ii][jj] == null || map[ii][jj].getType().equals("green")) && (Math.random() < 2.0/(dim.x*dim.y - brickCount - 1))) {
 						map[ii][jj] = new Tile("brick");
 						brickCount++; 
 					}

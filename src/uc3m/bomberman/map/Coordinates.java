@@ -13,7 +13,7 @@ public class Coordinates{
 		this.y = y > 0 ? y : 0;
 	}
 	public Coordinates tenthsToUnits(){
-		return new Coordinates((x+9)/10, (y+9)/10);
+		return new Coordinates(((x+4)/10), (y+8)/10);
 	}
 	public Coordinates unitsToTenths(){
 		return new Coordinates(x*10, y*10);
