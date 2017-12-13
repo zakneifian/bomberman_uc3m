@@ -163,6 +163,10 @@ public class Main{
 					game.getPlayer().moveTowards(Direction.LEFT);
 				}
 				break;
+			case "space":
+				if (game.getPlayer().getBombs() > 0) {
+					addEntity(game, board, new Bomb(nextId()));
+				}
 			}
 		}
 	}
