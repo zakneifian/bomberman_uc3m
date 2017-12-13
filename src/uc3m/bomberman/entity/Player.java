@@ -6,15 +6,12 @@ public class Player extends MovableEntity{
 	private int bombs = 1;
 	private int maxBombs = 1;
 	private int range = 2;
-
 	private String name = "bomberman";
 	private int score = 0;
-	
-	private int movingPhase = 0;
 
 	public Player(int id, String name){
-		super(id, "bomberman111.png", 100, new Coordinates(10, 10)); //TODO las coordenadas iniciales tienen que ser en el sitio adecuado
-		this.name = name;
+		super(id, "bomberman111.png", 100, new Coordinates(10, 10), 5); //5 es la cantidad de sprites que tiene por direccion de movimiento
+		this.name = name;												//ej, el slime/balloon seria 3.
 	}
 	
 	public void resetPlayerPos() {
@@ -24,6 +21,7 @@ public class Player extends MovableEntity{
 	public void onCollision(Entity col) {
 		// TODO Colision con otras entidades		
 	}
+
 
 	public void setName(String name) {
 		this.name = name;

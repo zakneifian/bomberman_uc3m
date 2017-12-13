@@ -9,7 +9,6 @@ public class Entity{
 	protected Coordinates position;
 	protected int hp;
 	protected boolean alive = true;
-	
 	/**
 	 * Creates an entity, that must have an id, a sprite and a max health
 	 * 
@@ -64,6 +63,7 @@ public class Entity{
 		}
 	}
 	
+	
 	//Setters
 	protected void setSprite(String path){
 		this.sprite = path;
@@ -87,4 +87,5 @@ public class Entity{
 	public int getHp() {
 		return hp;
 	}
+
 }

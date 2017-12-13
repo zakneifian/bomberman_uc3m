@@ -52,9 +52,8 @@ public class Main{
 		
 		board.setVisible(true);
 		for(int ii = 0; ii < game.getEntities().length; ii++){
-			board.gb_addSprite(game.getEntities()[ii].getId(), game.getEntities()[ii].getSprite(), true);
-		}
-
+			board.gb_addSprite(game.getEntities()[ii].getId(), game.getEntities()[ii].getSprite(), true);	
+		}		
 		board.gb_setTextAbility1("Bomb range");
 		board.gb_setTextAbility2("Player speed");
 		board.gb_setTextPointsDown("Bombs");
@@ -123,6 +122,8 @@ public class Main{
 		for(int ii = 0; ii < entities.length; ii++){
 			Entity current = entities[ii];
 			if(current.isAlive()){
+				board.gb_repaintBoard();
+				board.gb_addSprite(current.getId(), current.getSprite(), true);
 				board.gb_moveSpriteCoord(current.getId(), current.getPosition().x, current.getPosition().y);
 				board.gb_setSpriteVisible(current.getId(), true);
 			}
@@ -132,6 +133,10 @@ public class Main{
 		//TODO código de prueba. Mueve a bomberman hacia abajo hasta que se choque con algo
 		String action = board.gb_getLastAction().trim();
 		if(action.length() > 0){
+			if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
+				game.getPlayer().setEntityDir(action);
+				game.getPlayer().animateMovement(game.getPlayer().getSpritePhase(), game.getPlayer().getEntityDir());
+			}
 			switch(action){
 			case "up":
 				game.getPlayer().moveTowards(Direction.UP);
