@@ -132,7 +132,8 @@ public class Main{
 	public static void eventHandler(Game game, GameBoardGUI board){
 		//TODO código de prueba. Mueve a bomberman hacia abajo hasta que se choque con algo
 		String action = board.gb_getLastAction().trim();
-		if(action.length() > 0){
+		if(action.length() > 0){ 
+			//if movement
 			if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
 				game.getPlayer().setEntityDir(action);
 				game.getPlayer().animateMovement(game.getPlayer().getSpritePhase(), game.getPlayer().getEntityDir());
