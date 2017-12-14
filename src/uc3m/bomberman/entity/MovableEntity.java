@@ -26,7 +26,7 @@ public abstract class MovableEntity extends Entity{
 	 * @param dir
 	 */
 
-	public void animateMovement(int spritePhase, String[] entityDir) { //TODO generar sprites de los 4 movimientos para enemigos
+	public void animateMovement(int spritePhase, String[] entityDir) {
 		if (entityDir[1].equals(entityDir[0])) { //if the present movement equals the past one
 			if (getSpritePhase() < getSpriteRgQty()) { //if the phase is lower than its range limit of movement
 				setSpritePhase(getSpritePhase() + 1);  // sum one to the phase 

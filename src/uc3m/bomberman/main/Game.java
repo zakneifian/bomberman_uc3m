@@ -20,15 +20,18 @@ public class Game{
 	public Map getMap(){
 		return map[level];
 	}
+	public boolean nextMap(){
+		if(++level >= map.length){
+			level--;
+			return false;
+		}
+		return true;
+	}
 	/**
 	 * retorna si se ha podido añadir la entidad o no (si la id ya existe o no)
 	 * @param entity
 	 * @return
 	 */
-	public boolean nextMap(){
-		//TODO implementar
-		return true;
-	}
 	public boolean addEntity(Entity entity){
 		if(!entity.isAlive())
 			return false;
@@ -132,5 +135,8 @@ public class Game{
 	}
 	public Player getPlayer(){
 		return player;
+	}
+	public int getLevel(){
+		return level;
 	}
 }

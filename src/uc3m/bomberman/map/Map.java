@@ -1,6 +1,7 @@
 package uc3m.bomberman.map;
 public class Map{
 	private Tile[][] map;
+	//private String[][] upgrades;
 	private Coordinates dim;
 	private int nBricks = 50;
 	public Map(int dim){
@@ -16,7 +17,6 @@ public class Map{
 			}
 		}
 		//Create Walls
-		//TODO las casillas de arriba no pueden tener ladrillos, para que no se quede atrapado el jugador
 		for(int ii = 0; ii < map.length; ii++){
 			for(int jj = 0; jj < map[ii].length; jj++){
 				if (ii == 0 || jj == 0 || ii == map.length - 1 || jj == map[ii].length - 1 || (ii % 2 == 0 && jj % 2 == 0))
@@ -47,12 +47,17 @@ public class Map{
 			for(int jj = 0; jj < map[ii].length; jj++){
 				if(map[ii][jj] instanceof Explosion){
 					Explosion explosion = (Explosion) map[ii][jj];
-					if(explosion.tick())
+					if(explosion.tick()){
 						map[ii][jj] = new Tile("green");
+						//TODO UPGRADE Aquí desaparecen las explosiones, así que:
+						//if(upgrades[ii][jj] != null) -- meter una upgrade en donde está
+					}
 				}
 			}
 		}
 	}
+	//TODO UPGRADE public Upgrade consumeUpgradeAt(int x, int y) return upgrade[ii][jj] y quitarla
+	
 	//Get type of file
 	public String getTypeAt(int x, int y){
 		if(map[x][y] instanceof Explosion)

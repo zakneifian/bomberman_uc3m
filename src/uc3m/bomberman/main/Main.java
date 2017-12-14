@@ -26,8 +26,7 @@ public class Main{
 		//Create board
 		GameBoardGUI board = new GameBoardGUI(DIMENSION, DIMENSION);
 		prerender(game, board);
-		//TODO ALEJANDRO: He hecho dos contadores: uno para los fps y otro para los ticks que harán los cálculos.
-		//Así se pueden capar los fps jajaj (en realidad es para que la velocidad de los cálculos no dependa de la tasa de refresco de los gráficos)
+
 		long time = System.currentTimeMillis();
 		long timeTick = time;
 		long deltaTime = 0;
@@ -91,7 +90,7 @@ public class Main{
 		board.gb_setValueHealthCurrent(game.getPlayer().getHp());
 		board.gb_setValueAbility1(game.getPlayer().getRange());
 		board.gb_setValueAbility2(game.getPlayer().getSpeed());
-		//board.gb_setValueLevel(level);
+		board.gb_setValueLevel(game.getLevel());
 		board.gb_setValuePointsDown(game.getPlayer().getBombs());
 		board.gb_setValuePointsUp(game.getPlayer().getScore());
 	}
@@ -128,7 +127,6 @@ public class Main{
 		}
 	}
 	public static void eventHandler(Game game, GameBoardGUI board){
-		//TODO código de prueba. Mueve a bomberman hacia abajo hasta que se choque con algo
 		String action = board.gb_getLastAction().trim();
 		if(action.length() > 0){ 
 			//if movement

@@ -24,7 +24,7 @@ public class Entity{
 		this.sprite = sprite;
 		this.maxHp = maxHp;
 		this.hp = maxHp;
-		this.position = position; //TODO poner por defecto en la primera casilla libre
+		this.position = position;
 	}
 	/**
 	 * Checks collision with another entity
