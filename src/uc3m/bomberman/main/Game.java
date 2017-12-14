@@ -1,6 +1,5 @@
 package uc3m.bomberman.main;
 
-import edu.uc3m.game.GameBoardGUI;
 import uc3m.bomberman.entity.*;
 import uc3m.bomberman.map.*;
 
@@ -68,43 +67,40 @@ public class Game{
 //		String orientation = "";
 //		String place = "";
 		
-		bombPos = bombPos.tenthsToUnits(); //sin esto no parsea bien la coordenada y da error out of bounds
+		Coordinates square = bombPos.tenthsToUnits(); //sin esto no parsea bien la coordenada y da error out of bounds
 		//primero el centro 
-		getMap().setTypeAt(bombPos, "explosion");
+		getMap().setTypeAt(square, "explosion");
 		// set explosion_C4.gif
 		boolean wallN = false, wallW = false, wallS = false, wallE = false;
 		Coordinates[][] arrExplosive = new Coordinates[4][explosionLength]; // N, W, S, E
 		for (int ii = 1; ii < explosionLength; ii++) {
 			//Setting all the possible coordinates in all directions (but center)
-			arrExplosive[0][ii] = new Coordinates(bombPos.x, bombPos.y + ii); //North
-			arrExplosive[1][ii] = new Coordinates(bombPos.x - ii, bombPos.y); //West
-			arrExplosive[2][ii] = new Coordinates(bombPos.x, bombPos.y - ii); //South
-			arrExplosive[3][ii] = new Coordinates(bombPos.x + ii, bombPos.y); //East
+			arrExplosive[0][ii] = new Coordinates(square.x, square.y + ii); //North
+			arrExplosive[1][ii] = new Coordinates(square.x - ii, square.y); //West
+			arrExplosive[2][ii] = new Coordinates(square.x, square.y - ii); //South
+			arrExplosive[3][ii] = new Coordinates(square.x + ii, square.y); //East
 			//Taking into account the limits of the walls
 			if (!wallN && getMap().getTypeAt(arrExplosive[0][ii]).equals("wall")) wallN = true;
 			if (!wallW && getMap().getTypeAt(arrExplosive[1][ii]).equals("wall")) wallW = true;
 			if (!wallS && getMap().getTypeAt(arrExplosive[2][ii]).equals("wall")) wallS = true;
 			if (!wallE && getMap().getTypeAt(arrExplosive[3][ii]).equals("wall")) wallE = true;
 			//Setting sprites
+			getMap().setExplosionAt(square, "c");
 			if      (!wallN) {
-				getMap().setTypeAt(arrExplosive[0][ii], "explosion");
-				if      (ii != explosionLength - 1) ;//set explosion_V4.gif
-				else if (ii == explosionLength - 1) ;//set explosion_N4.gif	
+				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[0][ii], "v");//set explosion_V4.gif
+				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[0][ii], "s");//set explosion_N4.gif	
 			}
 			if (!wallW) {
-				getMap().setTypeAt(arrExplosive[1][ii], "explosion");
-				if      (ii != explosionLength - 1) ;//set explosion_H4.gif
-				else if (ii == explosionLength - 1) ;//set explosion_W4.gif	
+				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[1][ii], "h");//set explosion_H4.gif
+				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[1][ii], "w");//set explosion_W4.gif	
 			}
 			if (!wallS) {
-				getMap().setTypeAt(arrExplosive[2][ii], "explosion");
-				if      (ii != explosionLength - 1) ;//set explosion_V4.gif
-				else if (ii == explosionLength - 1) ;//set explosion_S4.gif	
+				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[2][ii], "v");//set explosion_V4.gif
+				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[2][ii], "n");//set explosion_S4.gif	
 			}
 			if (!wallE) {
-				getMap().setTypeAt(arrExplosive[3][ii], "explosion");
-				if      (ii != explosionLength - 1) ;//set explosion_H4.gif
-				else if (ii == explosionLength - 1) ;//set explosion_E4.gif	
+				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[3][ii], "h");//set explosion_H4.gif
+				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[3][ii], "e");//set explosion_E4.gif	
 			}
 		}
 		

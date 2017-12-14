@@ -7,8 +7,10 @@ import uc3m.bomberman.entity.*;
 import uc3m.bomberman.map.*;
 
 public class Main{
-	private final static int DIMENSION = 17;
-	private final static double FPS = 60.0;
+	public final static int DIMENSION = 17;
+	public final static double FPS = 60.0;
+	public final static int BOMB_TICK = 50;
+	public final static int EXP_TICK = 30;
 	
 	private static int NEXT_ID = 0;
 	
@@ -19,7 +21,7 @@ public class Main{
 	public static void main(String[] args) throws InterruptedException{
 		
 		Locale.setDefault(new Locale("en"));
-		Game game = new Game(DIMENSION, "hola");
+		Game game = new Game(DIMENSION, "Bomberman");
 		
 		//Create board
 		GameBoardGUI board = new GameBoardGUI(DIMENSION, DIMENSION);
@@ -40,7 +42,8 @@ public class Main{
 			if(deltaTimeTick > 1000.0/FPS){ //Esto son los ticks
 				eventHandler(game, board);
 				tickHandler(game, board);
-				tileEffects(game, board);
+				collisionHandler(game, board);
+				checkAliveEntities(game, board);
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
 			}
@@ -50,10 +53,6 @@ public class Main{
 			Thread.sleep(25);
 		}
 		
-	}
-		// TODO Auto-generated method stub
-
-	private static void tileEffects(Game game, GameBoardGUI board) {
 	}
 
 	public static void prerender(Game game, GameBoardGUI board){
@@ -159,7 +158,7 @@ public class Main{
 					game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
 				break;
 			case "space":
-				if (game.getPlayer().getBombs() > 0) {
+				if (game.getPlayer().putBomb()) {
 					addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
 				}
 			}
@@ -173,9 +172,37 @@ public class Main{
 				Bomb bomb = (Bomb) current;
 				if(bomb.tick()){
 					game.explodeAt(bomb.getPosition());
+					game.getPlayer().bombExploded();
 					removeEntity(game, board, bomb);
 				}
 			}
+		}
+		game.getMap().tickTiles();
+	}
+	public static void collisionHandler(Game game, GameBoardGUI board){
+		//Entity collision
+		for (int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			for(int jj = 0; jj < game.getEntities().length; jj++){
+				Entity another = game.getEntities()[jj];
+				if(!current.equals(another) && current.isAlive() && another.isAlive() && current instanceof MovableEntity && current.collides(another)){
+					MovableEntity movable = (MovableEntity) current;
+					movable.onCollision(another);
+				}
+			}
+		}
+		//Map explosions
+		for(int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			if(game.getMap().getTypeAt(current.getPosition().tenthsToUnits()).equals("explosion"))
+				current.takeDamage(game.getPlayer().getDamage());
+		}
+	}
+	public static void checkAliveEntities(Game game, GameBoardGUI board){
+		for (int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			if(!current.isAlive())
+				removeEntity(game, board, current);
 		}
 	}
 }

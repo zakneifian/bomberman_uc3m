@@ -1,10 +1,11 @@
 package uc3m.bomberman.entity;
 
+import uc3m.bomberman.main.Main;
 import uc3m.bomberman.map.*;
 
 public class Bomb extends Entity{
 	private final int TICK_TIME = 100;
-	private int maxTicks = 50;
+	private int maxTicks = Main.BOMB_TICK;
 	private long time;
 	
 	public Bomb(int id, Coordinates pos) {

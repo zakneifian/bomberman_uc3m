@@ -65,7 +65,9 @@ public class Entity{
 			}
 		}
 	}
-	
+	public boolean equals(Entity other){
+		return this.id == other.id;
+	}
 	
 	//Setters
 	protected void setSprite(String path){

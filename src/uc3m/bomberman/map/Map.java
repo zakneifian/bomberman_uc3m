@@ -37,8 +37,26 @@ public class Map{
 			}
 		}
 	}
+	/**
+	 * sends ticks to the appropiate tiles
+	 * @param x
+	 * @param y
+	 */
+	public void tickTiles(){
+		for(int ii = 0; ii < map.length; ii++){
+			for(int jj = 0; jj < map[ii].length; jj++){
+				if(map[ii][jj] instanceof Explosion){
+					Explosion explosion = (Explosion) map[ii][jj];
+					if(explosion.tick())
+						map[ii][jj] = new Tile("green");
+				}
+			}
+		}
+	}
 	//Get type of file
 	public String getTypeAt(int x, int y){
+		if(map[x][y] instanceof Explosion)
+			return "explosion";
 		if(x < map.length && y < map[x].length)
 			return map[x][y].getType();
 		return "null";
@@ -52,6 +70,13 @@ public class Map{
 	}
 	public void setTypeAt(Coordinates coords, String type){
 		setTypeAt(coords.x, coords.y, type);
+	}
+	//Set explosion
+	public void setExplosionAt(int x, int y, String type){
+		map[x][y] = new Explosion(type);
+	}
+	public void setExplosionAt(Coordinates coords, String type){
+		setExplosionAt(coords.x, coords.y, type);
 	}
 	//
 	public Coordinates getDimensions(){
