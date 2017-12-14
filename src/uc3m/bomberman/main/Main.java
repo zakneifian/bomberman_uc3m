@@ -51,6 +51,11 @@ public class Main{
 		}
 		
 	}
+	private static void tileEffects(Game game, GameBoardGUI board) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public static void prerender(Game game, GameBoardGUI board){
 		
 		board.setVisible(true);
@@ -114,7 +119,7 @@ public class Main{
 	}
 	
 	public static void renderEntities(Entity[] entities, GameBoardGUI board){
-		for(int ii = 0; ii < entities.length; ii++){
+		for(int ii = entities.length - 1; ii > -1; ii--){ // que lo ultimo en ser renderizado sea el jugador
 			Entity current = entities[ii];
 			if(current.isAlive()){
 				board.gb_addSprite(current.getId(), current.getSprite(), true);
