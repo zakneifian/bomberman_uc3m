@@ -51,9 +51,9 @@ public class Main{
 		}
 		
 	}
-	private static void tileEffects(Game game, GameBoardGUI board) {
 		// TODO Auto-generated method stub
-		
+
+	private static void tileEffects(Game game, GameBoardGUI board) {
 	}
 
 	public static void prerender(Game game, GameBoardGUI board){

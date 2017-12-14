@@ -1,5 +1,6 @@
 package uc3m.bomberman.main;
 
+import edu.uc3m.game.GameBoardGUI;
 import uc3m.bomberman.entity.*;
 import uc3m.bomberman.map.*;
 
@@ -63,7 +64,73 @@ public class Game{
 	}
 	
 	public void explodeAt(Coordinates bombPos){
+		int explosionLength = getPlayer().getRange();
+//		String orientation = "";
+//		String place = "";
+		
+		bombPos = bombPos.tenthsToUnits(); //sin esto no parsea bien la coordenada y da error out of bounds
+		//primero el centro 
+		getMap().setTypeAt(bombPos, "explosion");
+		// set explosion_C4.gif
+		boolean wallN = false, wallW = false, wallS = false, wallE = false;
+		Coordinates[][] arrExplosive = new Coordinates[4][explosionLength]; // N, W, S, E
+		for (int ii = 1; ii < explosionLength; ii++) {
+			//Setting all the possible coordinates in all directions (but center)
+			arrExplosive[0][ii] = new Coordinates(bombPos.x, bombPos.y + ii); //North
+			arrExplosive[1][ii] = new Coordinates(bombPos.x - ii, bombPos.y); //West
+			arrExplosive[2][ii] = new Coordinates(bombPos.x, bombPos.y - ii); //South
+			arrExplosive[3][ii] = new Coordinates(bombPos.x + ii, bombPos.y); //East
+			//Taking into account the limits of the walls
+			if (!wallN && getMap().getTypeAt(arrExplosive[0][ii]).equals("wall")) wallN = true;
+			if (!wallW && getMap().getTypeAt(arrExplosive[1][ii]).equals("wall")) wallW = true;
+			if (!wallS && getMap().getTypeAt(arrExplosive[2][ii]).equals("wall")) wallS = true;
+			if (!wallE && getMap().getTypeAt(arrExplosive[3][ii]).equals("wall")) wallE = true;
+			//Setting sprites
+			if      (!wallN) {
+				getMap().setTypeAt(arrExplosive[0][ii], "explosion");
+				if      (ii != explosionLength - 1) ;//set explosion_V4.gif
+				else if (ii == explosionLength - 1) ;//set explosion_N4.gif	
+			}
+			if (!wallW) {
+				getMap().setTypeAt(arrExplosive[1][ii], "explosion");
+				if      (ii != explosionLength - 1) ;//set explosion_H4.gif
+				else if (ii == explosionLength - 1) ;//set explosion_W4.gif	
+			}
+			if (!wallS) {
+				getMap().setTypeAt(arrExplosive[2][ii], "explosion");
+				if      (ii != explosionLength - 1) ;//set explosion_V4.gif
+				else if (ii == explosionLength - 1) ;//set explosion_S4.gif	
+			}
+			if (!wallE) {
+				getMap().setTypeAt(arrExplosive[3][ii], "explosion");
+				if      (ii != explosionLength - 1) ;//set explosion_H4.gif
+				else if (ii == explosionLength - 1) ;//set explosion_E4.gif	
+			}
+		}
+		
 	}
+
+//	public String ExplosionSprite(String orientation, String place) {
+//		// Orientation: "N", "W", "E", "S"
+//		// Place: "Center", "Middle", "Edge"
+//		String toReturn = "";
+//		if (place.equals("Center")) {
+//			toReturn = "explosion_C4.gif";
+//		}
+//		else if (place.equals("Middle")) {
+//			if (orientation.equals("N") || orientation.equals("S")) {
+//				toReturn = "explosion_V4.gif";
+//			}
+//			else if (orientation.equals("E") || orientation.equals("W")) {
+//				toReturn = "explosion_H4.gif";
+//			}
+//		}
+//		else if (place.equals("Edge")) {
+//			toReturn = "explosion_" + orientation + "4.gif";
+//		}
+//		return toReturn;
+//	}
+
 	public Entity[] getEntities(){
 		return entities;
 	}

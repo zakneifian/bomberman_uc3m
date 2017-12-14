@@ -1,7 +1,7 @@
 package uc3m.bomberman.map;
 
 public class Tile{
-	private final char TILE_TYPE[] = {'B', 'W', 'G'};
+	private final char TILE_TYPE[] = {'B', 'W', 'G', 'E'};
 	private char type;
 	private boolean walkable;
 	
@@ -44,6 +44,8 @@ public class Tile{
 			return "wall";
 		case 'G':
 			return "green";
+		case 'E':
+			return "explosion";
 		default:
 			return "wall";
 		}
@@ -59,6 +61,8 @@ public class Tile{
 			return "bricks.gif";
 		case 'W':
 			return "wall.gif";
+		case 'E':
+			return null; //probando
 		default:
 			return "wall.gif";
 		}

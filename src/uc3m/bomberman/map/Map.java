@@ -78,4 +78,6 @@ public class Map{
 	public String getSpriteAt(int x, int y){
 		return map[x][y].getSprite();
 	}
+
+
 }
