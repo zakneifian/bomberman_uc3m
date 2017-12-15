@@ -22,6 +22,7 @@ public class Main{
 		
 		Locale.setDefault(new Locale("en"));
 		Game game = new Game(DIMENSION, "Bomberman");
+		boolean running = true;
 		
 		//Create board
 		GameBoardGUI board = new GameBoardGUI(DIMENSION, DIMENSION);
@@ -32,7 +33,7 @@ public class Main{
 		long deltaTime = 0;
 		long deltaTimeTick = 0;
 		
-		while(true){ //TODO este boolean deberia ser una variable
+		while(running){ //TODO este boolean deberia ser una variable
 			if(deltaTime > 1000.0/FPS){ //Esto son los fps
 				render(game, board);
 				deltaTime = 0;
@@ -43,6 +44,7 @@ public class Main{
 				tickHandler(game, board);
 				collisionHandler(game, board);
 				checkAliveEntities(game, board);
+				
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
 			}
@@ -194,6 +196,10 @@ public class Main{
 			Entity current = game.getEntities()[ii];
 			if(game.getMap().getTypeAt(current.getPosition().tenthsToUnits()).equals("explosion"))
 				current.takeDamage(game.getPlayer().getDamage());
+		}
+		//Upgrades
+		if(game.getMap().getTypeAt(game.getPlayer().getPosition().tenthsToUnits()).equals("upgrade")){
+			game.getPlayer().upgrade(game.getMap().consumeUpgradeAt(game.getPlayer().getPosition().tenthsToUnits()));
 		}
 	}
 	public static void checkAliveEntities(Game game, GameBoardGUI board){

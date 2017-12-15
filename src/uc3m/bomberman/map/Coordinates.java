@@ -18,4 +18,7 @@ public class Coordinates{
 	public Coordinates unitsToTenths(){
 		return new Coordinates(x*10, y*10);
 	}
+	public boolean equals(Coordinates coords){
+		return this.x == coords.x && this.y == coords.y;
+	}
 }

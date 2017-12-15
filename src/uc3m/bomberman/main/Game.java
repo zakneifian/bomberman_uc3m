@@ -10,8 +10,9 @@ public class Game{
 	private int level = 0;
 	
 	public Game(int dim, String playerName){
+		//Generate upgrades of each level		
 		for(int ii = 0; ii < map.length; ii++){
-			map[ii] = new Map(dim);
+			map[ii] = new Map(dim, ii);
 		}
 		player = new Player(Main.nextId(), playerName);
 		entities = new Entity[1];

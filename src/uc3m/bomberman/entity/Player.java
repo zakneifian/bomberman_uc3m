@@ -9,7 +9,8 @@ public class Player extends MovableEntity{
 	private String name = "bomberman";
 	private int score = 0;
 	private int damage = 10; //TODO esto es una variable, así que debería variar
-
+	private boolean remote = false;
+	
 	public Player(int id, String name){
 		super(id, "bomberman111.png", 100, new Coordinates(10, 10), 5); //5 es la cantidad de sprites que tiene por direccion de movimiento
 		this.name = name;												//ej, el slime/balloon seria 3.
@@ -23,7 +24,29 @@ public class Player extends MovableEntity{
 		// TODO Colision con otras entidades		
 	}
 
-
+	public void upgrade(String type){
+		switch(type){
+		case "bomb":
+			maxBombs++;
+			bombs++;
+			break;
+		case "fire":
+			if(++range > 5) range--;
+			break;
+		case "special":
+			range = 5;
+			break;
+		case "remote":
+			remote = true;
+			break;
+		case "skate":
+			if(++speed > 10) speed--;
+			break;
+		case "geta":
+			speed = 1;		
+		}
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -41,7 +64,9 @@ public class Player extends MovableEntity{
 		if(bombs > maxBombs)
 			bombs = maxBombs;
 	}
-	
+	public boolean isRemote(){
+		return remote;
+	}
 	public int getBombs() {
 		return bombs;
 	}
