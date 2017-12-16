@@ -61,8 +61,8 @@ public class Player extends MovableEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void addScore(int score) {
+		this.score += score;
 	}
 	public boolean putBomb(){
 		if(bombs <= 0)

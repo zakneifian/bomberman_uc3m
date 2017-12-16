@@ -27,9 +27,5 @@ public class Bomb extends Entity{
 		}
 		return false;
 	}
-	@Override
-	public void takeDamage(int dmg){
-		//do nothing
-	}
 
 }

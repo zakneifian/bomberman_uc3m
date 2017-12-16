@@ -34,6 +34,10 @@ public class Slime extends Enemy {
 		}
 		this.animateMovement(this.getSpritePhase(), this.getEntityDir());		
 	}
-	
+
+	@Override
+	public int getScoreOnDeath() {
+		return 250;
+	}
 	
 }

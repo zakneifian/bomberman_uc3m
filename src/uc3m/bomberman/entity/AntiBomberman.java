@@ -80,5 +80,10 @@ public class AntiBomberman extends Enemy {
 			}
 		}
 	}
+
+	@Override
+	public int getScoreOnDeath() {
+		return 500;
+	}
 	
 }

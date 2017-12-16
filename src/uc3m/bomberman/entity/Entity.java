@@ -44,7 +44,11 @@ public class Entity{
 		return !map.isWalkableAt(simplePos);
 	}
 	
-	//Damage
+	/**
+	 * 
+	 * @param dmg
+	 * @return true if the entity was killed, false otherwise
+	 */
 	public void takeDamage(int dmg){
 		if(dmg > 0){
 			hp -= dmg;

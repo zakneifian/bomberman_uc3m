@@ -242,8 +242,11 @@ public class Main{
 			if (current instanceof Player && !current.isAlive()) {
 				gameOver(game, board);				
 			}
-			if(!current.isAlive())
+			if(!current.isAlive()){
+				if(current instanceof Enemy)
+					game.getPlayer().addScore(((Enemy) current).getScoreOnDeath());
 				removeEntity(game, board, current);
+			}
 		}
 		if (enemyN == 0) game.getPlayer().setEnemiesAlive(false);
 		else game.getPlayer().setEnemiesAlive(true);

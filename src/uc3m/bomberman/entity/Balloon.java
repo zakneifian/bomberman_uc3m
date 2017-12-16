@@ -56,5 +56,9 @@ public class Balloon extends Enemy {
 			time = System.currentTimeMillis();
 		}
 	}
+	@Override
+	public int getScoreOnDeath() {
+		return 100;
+	}
 	
 }
