@@ -1,7 +1,7 @@
 package uc3m.bomberman.map;
 
 public class Upgrade extends Tile{
-	private final char[] UPG_TYPE = {'B', 'F', 'S', 'R', 'K', 'G'};
+	private final char[] UPG_TYPE = {'B', 'F', 'S', 'R', 'K', 'G', 'D'};
 	private char type;
 	
 	public Upgrade(String type) {
@@ -27,6 +27,8 @@ public class Upgrade extends Tile{
 			i--;
 		case "geta":
 			i--;
+		case "door":
+			i--;
 			this.type = UPG_TYPE[i];
 		}
 	}
@@ -45,6 +47,8 @@ public class Upgrade extends Tile{
 			return "skate";
 		case 'G':
 			return "geta";
+		case 'D':
+			return "door";
 		}
 		return "null";
 	}
@@ -64,6 +68,8 @@ public class Upgrade extends Tile{
 			return "Skatesprite.png";
 		case 'G':
 			return "Getasprite.png";
+		case 'D':
+			return "DoorClosed.png";
 		}
 		return "null";
 	}

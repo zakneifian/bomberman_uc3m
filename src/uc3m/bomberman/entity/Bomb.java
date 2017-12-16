@@ -9,7 +9,7 @@ public class Bomb extends Entity{
 	private long time;
 	
 	public Bomb(int id, Coordinates pos) {
-		super(id, "bomb1.gif", -1, pos);
+		super(id, "bomb1.gif", -1, pos); //con 10k vida no desaparecen si otra le hace daño
 		time  = System.currentTimeMillis();
 	}
 	
@@ -26,6 +26,10 @@ public class Bomb extends Entity{
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public void takeDamage(int dmg){
+		//do nothing
 	}
 
 }

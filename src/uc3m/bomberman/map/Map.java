@@ -7,11 +7,11 @@ public class Map{
 	private Coordinates dim;
 	
 	
-	public Map(int dim, int level){
+	public Map(int dim, int level, Coordinates[] playerPersonalSpace){
 		this.dim = new Coordinates(dim, dim);
-		createMap(level);
+		createMap(playerPersonalSpace, level);
 	}
-	private void createMap(int level){
+	private void createMap(Coordinates[] playerPersonalSpace, int level){
 		map = new Tile[dim.x][dim.y];
 		upgrades = new String[dim.x][dim.y];
 		//Create green cells
@@ -29,12 +29,12 @@ public class Map{
 		}		
 		//Create Bricks
 		int brickCount = 0;
-		
 		while ( brickCount < NBRICKS) {
+			//System.out.println(brickCount + " brick placed");
 			for(int ii = 0; ii < map.length; ii++){
 				for(int jj = 0; jj < map[ii].length; jj++){
 					//if there is no bricks or walls we will set a brick with a given probability of dim*dim
-					if (!(ii == 1 && jj == 1) && !(ii == 1 && jj == 2) && !(ii == 2 && jj == 1) && brickCount < NBRICKS && (map[ii][jj] == null || map[ii][jj].getType().equals("green")) && (Math.random() < 2.0/(dim.x*dim.y - brickCount - 1))) {
+					if (!isInPlayerPersonalSpace(playerPersonalSpace, new Coordinates(ii, jj)) && brickCount < NBRICKS && (map[ii][jj] == null || map[ii][jj].getType().equals("green")) && (Math.random() < 2.0/(dim.x*dim.y - brickCount - 1))) {
 						map[ii][jj] = new Tile("brick");
 						brickCount++; 
 					}
@@ -68,13 +68,14 @@ public class Map{
 	}
 	
 	private void genUpgrades(int level){
-		int bomb, fire, special, remote, skate, geta;
+		int bomb, fire, special, remote, skate, geta, door;
 		bomb = (int) (3*(50.0/NBRICKS)+(Math.random()*2)-1);
 		fire = 1;
 		special = (level+1)%5 == 0 ? 1 : 0;
 		remote = (level+1)%10 == 0 ? 1 : 0;
 		skate = (level+1)%2 == 0 ? (int)(Math.random()*2) : 0;
 		geta = Math.random()<0.2 ? 1 : 0;
+		door = 1;
 		while(bomb > 0){
 			for(int ii = 0; ii < upgrades.length; ii++){
 				for(int jj = 0; jj < upgrades[ii].length; jj++){
@@ -135,6 +136,16 @@ public class Map{
 				}
 			}
 		}
+		while(door > 0){
+			for(int ii = 0; ii < upgrades.length; ii++){
+				for(int jj = 0; jj < upgrades[ii].length; jj++){
+					if(map[ii][jj].getType().equals("brick") && Math.random() < (double) door/(double) NBRICKS && upgrades[ii][jj] == null){
+						upgrades[ii][jj] = "door";
+						door--;
+					}
+				}
+			}
+		}	
 	}
 	
 	//Get type of file
@@ -201,5 +212,19 @@ public class Map{
 		return map[x][y].getSprite();
 	}
 
+	public Tile getTileAt(Coordinates coords) {
+		return getTileAt(coords.x, coords.y);
+	}
+	
+	public Tile getTileAt(int x, int y) {
+		return map[x][y];	
+	}
+	
+	private boolean isInPlayerPersonalSpace(Coordinates[] playerPersonalSpace, Coordinates coords) {
+		for (int ii = 0; ii < playerPersonalSpace.length; ii++ ) {
+			if (playerPersonalSpace[ii].equals(coords)) return true;
+		}
+		return false;
+	}
 
 }

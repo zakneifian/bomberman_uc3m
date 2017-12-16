@@ -8,13 +8,14 @@ public class Game{
 	private Entity[] entities;
 	private Player player;
 	private int level = 0;
-	
+
 	public Game(int dim, String playerName){
-		//Generate upgrades of each level		
-		for(int ii = 0; ii < map.length; ii++){
-			map[ii] = new Map(dim, ii);
-		}
+		//Generate upgrades of each level
 		player = new Player(Main.nextId(), playerName);
+		map[0] = new Map(dim, 0, getPlayerPersonalSpace(player));
+//		for(int ii = 0; ii < map.length; ii++){
+//			map[ii] = new Map(dim, ii);
+//		}
 		entities = new Entity[1];
 		entities[0] = player;
 	}
@@ -26,6 +27,7 @@ public class Game{
 			level--;
 			return false;
 		}
+		map[level] = new Map(Main.DIMENSION, level, getPlayerPersonalSpace(player));
 		return true;
 	}
 	/**
@@ -90,19 +92,19 @@ public class Game{
 			if (!wallE && getMap().getTypeAt(arrExplosive[3][ii]).equals("wall")) wallE = true;
 			//Setting sprites
 			getMap().setExplosionAt(square, "c");
-			if      (!wallN) {
+			if (!wallN && !(getMap().getTileAt(arrExplosive[0][ii]) instanceof Upgrade)) {
 				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[0][ii], "v");//set explosion_V4.gif
 				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[0][ii], "s");//set explosion_N4.gif	
 			}
-			if (!wallW) {
+			if (!wallW && !(getMap().getTileAt(arrExplosive[0][ii]) instanceof Upgrade)) {
 				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[1][ii], "h");//set explosion_H4.gif
 				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[1][ii], "w");//set explosion_W4.gif	
 			}
-			if (!wallS) {
+			if (!wallS && !(getMap().getTileAt(arrExplosive[0][ii]) instanceof Upgrade)) {
 				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[2][ii], "v");//set explosion_V4.gif
 				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[2][ii], "n");//set explosion_S4.gif	
 			}
-			if (!wallE) {
+			if (!wallE && !(getMap().getTileAt(arrExplosive[0][ii]) instanceof Upgrade)) {
 				if      (ii != explosionLength - 1) getMap().setExplosionAt(arrExplosive[3][ii], "h");//set explosion_H4.gif
 				else if (ii == explosionLength - 1) getMap().setExplosionAt(arrExplosive[3][ii], "e");//set explosion_E4.gif	
 			}
@@ -110,26 +112,6 @@ public class Game{
 		
 	}
 
-//	public String ExplosionSprite(String orientation, String place) {
-//		// Orientation: "N", "W", "E", "S"
-//		// Place: "Center", "Middle", "Edge"
-//		String toReturn = "";
-//		if (place.equals("Center")) {
-//			toReturn = "explosion_C4.gif";
-//		}
-//		else if (place.equals("Middle")) {
-//			if (orientation.equals("N") || orientation.equals("S")) {
-//				toReturn = "explosion_V4.gif";
-//			}
-//			else if (orientation.equals("E") || orientation.equals("W")) {
-//				toReturn = "explosion_H4.gif";
-//			}
-//		}
-//		else if (place.equals("Edge")) {
-//			toReturn = "explosion_" + orientation + "4.gif";
-//		}
-//		return toReturn;
-//	}
 
 	public Entity[] getEntities(){
 		return entities;
@@ -140,4 +122,17 @@ public class Game{
 	public int getLevel(){
 		return level;
 	}
+	public Coordinates[] getPlayerPersonalSpace(Player player) {
+		Coordinates[] playerPersonalSpace = new Coordinates[] {new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y + 1), 
+				   new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y     ),
+				   new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y - 1),
+				   new Coordinates(player.getPosition().tenthsToUnits().x     , player.getPosition().tenthsToUnits().y + 1),
+				   new Coordinates(player.getPosition().tenthsToUnits().x     , player.getPosition().tenthsToUnits().y     ),
+				   new Coordinates(player.getPosition().tenthsToUnits().x     , player.getPosition().tenthsToUnits().y - 1),
+				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y + 1),
+				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y     ),
+				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y - 1)};
+		return playerPersonalSpace;
+	}
 }
+

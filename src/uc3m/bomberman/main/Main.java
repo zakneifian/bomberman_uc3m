@@ -44,6 +44,7 @@ public class Main{
 				tickHandler(game, board);
 				collisionHandler(game, board);
 				checkAliveEntities(game, board);
+				checkIfNextLevel(game, board);
 				
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
@@ -130,7 +131,7 @@ public class Main{
 	}
 	public static void eventHandler(Game game, GameBoardGUI board){
 		String action = board.gb_getLastAction().trim();
-		if(action.length() > 0){ 
+		if(action.length() > 0 && game.getPlayer().isAlive()){ 
 			//if movement
 			if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
 				game.getPlayer().setEntityDir(action);
@@ -203,10 +204,24 @@ public class Main{
 		}
 	}
 	public static void checkAliveEntities(Game game, GameBoardGUI board){
+		int enemyN = 0;
 		for (int ii = 0; ii < game.getEntities().length; ii++){
 			Entity current = game.getEntities()[ii];
+			if (current instanceof Enemy && current.isAlive()) enemyN++;
+			if (current instanceof Player && !current.isAlive()) {
+				//TODO perder
+			}
 			if(!current.isAlive())
 				removeEntity(game, board, current);
+		}
+		if (enemyN == 0) game.getPlayer().setEnemiesAlive(false);
+		else game.getPlayer().setEnemiesAlive(true);
+	}
+	
+	public static void checkIfNextLevel(Game game, GameBoardGUI board) {
+		if (!game.getPlayer().getEnemiesAlive() && game.getPlayer().getOpenedDoorOnTouch()) {
+			game.getPlayer().setOpenedDoorOnTouch(false);
+			game.nextMap();
 		}
 	}
 }

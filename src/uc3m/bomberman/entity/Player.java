@@ -3,13 +3,16 @@ package uc3m.bomberman.entity;
 import uc3m.bomberman.map.*;
 
 public class Player extends MovableEntity{
-	private int bombs = 1;
-	private int maxBombs = 1;
-	private int range = 2;
+	private int bombs = 5;
+	private int maxBombs = 5;
+	private int range = 7;
 	private String name = "bomberman";
 	private int score = 0;
 	private int damage = 10; //TODO esto es una variable, así que debería variar
 	private boolean remote = false;
+
+	private boolean enemiesAlive = true;
+	private boolean openedDoorOnTouch = false;
 	
 	public Player(int id, String name){
 		super(id, "bomberman111.png", 100, new Coordinates(10, 10), 5); //5 es la cantidad de sprites que tiene por direccion de movimiento
@@ -43,7 +46,13 @@ public class Player extends MovableEntity{
 			if(++speed > 10) speed--;
 			break;
 		case "geta":
-			speed = 1;		
+			speed = 1;
+			break;
+		case "door":
+			if (!enemiesAlive) {
+				openedDoorOnTouch = true;
+			}
+			
 		}
 	}
 	
@@ -86,5 +95,21 @@ public class Player extends MovableEntity{
 	}
 	public String getName(){
 		return name;
+	}
+
+	public boolean getEnemiesAlive() {
+		return enemiesAlive;
+	}
+
+	public void setEnemiesAlive(boolean enemiesAlive) {
+		this.enemiesAlive = enemiesAlive;
+	}
+	
+	public boolean getOpenedDoorOnTouch() {
+		return openedDoorOnTouch;
+	}
+
+	public void setOpenedDoorOnTouch(boolean openedDoorOnTouch) {
+		this.openedDoorOnTouch = openedDoorOnTouch;
 	}
 }
