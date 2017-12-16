@@ -50,7 +50,7 @@ public class Upgrade extends Tile{
 		case 'D':
 			return "door";
 		}
-		return "wall";
+		return "null";
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class Upgrade extends Tile{
 		case 'D':
 			return "DoorClosed.png";
 		}
-		return "wall";
+		return "null";
 	}
 	
 }

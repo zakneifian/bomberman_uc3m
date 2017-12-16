@@ -195,7 +195,7 @@ public class Map{
 	public String consumeUpgradeAt(int x, int y){
 		Upgrade upg = (Upgrade) map[x][y];
 		String type = upg.getUpgradeType();
-		map[x][y] = new Tile("green");
+		if (!type.equals("door")) map[x][y] = new Tile("green");
 		return type;
 	}
 	public String consumeUpgradeAt(Coordinates coords){
