@@ -153,8 +153,8 @@ public class Map{
 	}
 	private void genEnemies(int level) {
 		int balloon, slime;
-		balloon = (int) Math.floor(Math.random()*10 + 1);
-		slime = ((level > 1) && (level+1)%4 == 0) ? ((level + 1)/4 + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
+		balloon = (int) Math.floor(Math.random()*10 + 1);  
+		slime = (level > 0 || (level+1)%4 == 0) ? ((level + 1)/4  + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
 		while(balloon > 0){
 			for(int ii = 0; ii < enemies.length; ii++){
 				for(int jj = 0; jj < enemies[ii].length; jj++){
@@ -246,7 +246,8 @@ public class Map{
 	}
 	
 	public Tile getTileAt(int x, int y) {
-		return map[x][y];	//TODO arreglar bug con explosiones
+		return map[x][y]; //TODO bug cuyo motivo no se que triggerea al explotar
+
 	}
 	
 	private boolean isInPlayerPersonalSpace(Coordinates[] playerPersonalSpace, Coordinates coords) {

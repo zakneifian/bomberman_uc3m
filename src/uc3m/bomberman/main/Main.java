@@ -270,18 +270,28 @@ public class Main{
 			else if (current instanceof Slime) {
 				Coordinates playerPos = game.getPlayer().getPosition();
 				Coordinates slimePos  = current.getPosition();
-				if      (slimePos.x > playerPos.x && slimePos.y > playerPos.y) {
-					
+				if (slimePos.x > playerPos.x) { //if slime is to the right of player
+					((Slime) current).moveTowards(Direction.LEFT, game.getMap());
+					((Slime) current).setEntityDir("left");
+					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.RIGHT, game.getMap());			
 				}
-				else if (slimePos.x > playerPos.x && slimePos.y < playerPos.y) {
-					
+				if (slimePos.x < playerPos.x) { //if slime is to the left of player
+					((Slime) current).moveTowards(Direction.RIGHT, game.getMap());
+					((Slime) current).setEntityDir("right");
+					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.LEFT, game.getMap());					
 				}
-				else if (slimePos.x < playerPos.x && slimePos.y > playerPos.y) {
-					
+				if (slimePos.y > playerPos.y) { //if slime is above slime
+					((Slime) current).moveTowards(Direction.UP, game.getMap());
+					((Slime) current).setEntityDir("down");
+					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.DOWN, game.getMap());			
 				}
-				else if (slimePos.x < playerPos.x && slimePos.y < playerPos.y) {
-					
+				if (slimePos.y < playerPos.y) { //if slime is below slime
+					((Slime) current).moveTowards(Direction.DOWN, game.getMap());
+					((Slime) current).setEntityDir("up");
+					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.UP, game.getMap());			
 				}
+				((Slime) current).animateMovement(((Slime) current).getSpritePhase(), ((Slime) current).getEntityDir());
+
 			}
 		}
 	}

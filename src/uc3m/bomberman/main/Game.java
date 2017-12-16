@@ -140,6 +140,9 @@ public class Game{
 				if (getMap().getEnemiesPos()[ii][jj] == "balloon") {
 					addEntity(new Balloon(Main.nextId(), new Coordinates(ii*10, jj*10)));
 				}
+				else if (getMap().getEnemiesPos()[ii][jj] == "slime") {
+					addEntity(new Slime(Main.nextId(), new Coordinates(ii*10, jj*10)));
+				}
 			}
 		}
 	}
