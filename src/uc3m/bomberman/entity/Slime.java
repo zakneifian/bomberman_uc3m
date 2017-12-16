@@ -6,7 +6,7 @@ import uc3m.bomberman.map.Coordinates;
 public class Slime extends Enemy {
 
 	public Slime(int id, Coordinates position) {
-		super(id, "enemy211.png", 100, position, 3, 10);
+		super(id, "enemy211.png", 100, position, 3, 4);
 		this.speed = 1;
 	}
 
