@@ -8,7 +8,7 @@ import uc3m.bomberman.map.*;
 
 public class Main{
 	public final static int DIMENSION = 17;
-	public final static double FPS = 120.0;
+	public final static double FPS = 60.0;
 	public final static int BOMB_TICK = 50;
 	public final static int EXP_TICK = 30;
 	
@@ -45,6 +45,7 @@ public class Main{
 				collisionHandler(game, board);
 				checkAliveEntities(game, board);
 				checkIfNextLevel(game, board);
+				enemyMovementHandler(game, board, time);
 				
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
@@ -202,6 +203,17 @@ public class Main{
 		if(game.getMap().getTypeAt(game.getPlayer().getPosition().tenthsToUnits()).equals("upgrade")){
 			game.getPlayer().upgrade(game.getMap().consumeUpgradeAt(game.getPlayer().getPosition().tenthsToUnits()));
 		}
+		
+		//Enemy collision
+		for (int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			for(int jj = 0; jj < game.getEntities().length; jj++){
+				Entity another = game.getEntities()[jj];
+				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.collides(another)){
+					game.getPlayer().takeDamage(((Enemy) another).getDamagetoPlayer());
+				}
+			}
+		}		
 	}
 	public static void checkAliveEntities(Game game, GameBoardGUI board){
 		int enemyN = 0;
@@ -222,6 +234,40 @@ public class Main{
 		if (!game.getPlayer().getEnemiesAlive() && game.getPlayer().getOpenedDoorOnTouch()) {
 			game.getPlayer().setOpenedDoorOnTouch(false);
 			game.nextMap();
+		}
+	}
+	
+	public static void enemyMovementHandler(Game game, GameBoardGUI board, long time) {
+		for(int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			if(current instanceof Balloon){
+				if(System.currentTimeMillis() - time > -0.000000000000000000000000000000000000000000000000000000000000000000000001) {
+					int dir = (int) Math.floor(Math.random()*4);
+					if (dir == 0) {
+						((Balloon) current).moveTowards(Direction.UP, game.getMap());
+						((Balloon) current).setEntityDir("up");
+						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.DOWN, game.getMap());
+					}
+					else if (dir == 1) {
+						((Balloon) current).moveTowards(Direction.DOWN, game.getMap());
+						((Balloon) current).setEntityDir("down");
+						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.UP, game.getMap());
+					}
+					else if (dir == 2) {
+						((Balloon) current).moveTowards(Direction.LEFT, game.getMap());
+						((Balloon) current).setEntityDir("left");
+						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.RIGHT, game.getMap());
+					}
+					else if (dir == 3) {
+						((Balloon) current).moveTowards(Direction.RIGHT, game.getMap());
+						((Balloon) current).setEntityDir("right");
+						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.LEFT, game.getMap());
+					}
+
+					((Balloon) current).animateMovement(((Balloon) current).getSpritePhase(), ((Balloon) current).getEntityDir());
+				}
+			}
+			else if (current instanceof Slime) {}
 		}
 	}
 }
