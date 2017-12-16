@@ -8,6 +8,7 @@ public class Game{
 	private Entity[] entities;
 	private Player player;
 	private int level = 0; //TODO arreglar bug que no permite iniciar en niveles altos
+	private String playerAction;
 
 	public Game(int dim, String playerName){
 		//Generate upgrades of each level
@@ -133,7 +134,7 @@ public class Game{
 				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y - 1)};
 		return playerPersonalSpace;
 	}
-	
+
 	private void spawnEnemies( ) {
 		for (int ii = 0; ii < getMap().getEnemiesPos().length; ii++) {
 			for (int jj = 0; jj < getMap().getEnemiesPos()[ii].length; jj++) {
@@ -148,6 +149,12 @@ public class Game{
 				}
 			}
 		}
+	}
+	public String getPlayerAction() {
+		return playerAction;
+	}
+	public void setPlayerAction(String playerAction) {
+		this.playerAction = playerAction;
 	}
 }
 

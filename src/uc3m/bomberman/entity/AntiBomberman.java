@@ -51,10 +51,11 @@ public class AntiBomberman extends Enemy {
 	}
 	@Override
 	public void moveEnemy(Game game) {
-		moveEnemyAction(game, "up");
+		String action = game.getPlayerAction();
+		moveEnemyAction(game, action);
 	}
 	public void moveEnemyAction(Game game, String lastAction){
-		if(lastAction.length() > 0 && this.isAlive()){ 
+		if(lastAction.length() > 0 && this.isAlive() && game.getPlayer().isAlive()){ 
 			//if movement
 			if (lastAction.equals("up") || lastAction.equals("down") || lastAction.equals("left") || lastAction.equals("right")) {
 				this.setEntityDir(lastAction);
@@ -80,6 +81,9 @@ public class AntiBomberman extends Enemy {
 				this.moveTowards(Direction.RIGHT, game.getMap());
 				if(this.collides(game.getMap()))
 					this.moveTowards(Direction.LEFT, game.getMap());
+			case "space":
+				if (this.putBomb()) {
+				}
 			}
 		}
 	}

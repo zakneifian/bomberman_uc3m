@@ -131,6 +131,7 @@ public class Main{
 	}
 	public static void eventHandler(Game game, GameBoardGUI board){
 		String action = board.gb_getLastAction().trim();
+		game.setPlayerAction(action);
 		if(action.length() > 0 && game.getPlayer().isAlive()){ 
 			//if movement
 			if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
@@ -161,6 +162,10 @@ public class Main{
 			case "space":
 				if (game.getPlayer().putBomb()) {
 					addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
+					for (int ii = 0; ii < game.getEntities().length; ii++){
+						Entity current = game.getEntities()[ii];
+						if (current instanceof AntiBomberman) addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
+					}
 				}
 			case "tab":
 				//TODO explotar todas las bombas presentes
@@ -184,7 +189,7 @@ public class Main{
 				}
 			}else if(current instanceof Enemy){
 				((Enemy) current).moveEnemy(game);
-				if (current instanceof AntiBomberman) { //TODO funciona muy de vez en cuando, bug raro
+				if (current instanceof AntiBomberman) {
 					((AntiBomberman) current).moveEnemyAction(game, board.gb_getLastAction());
 				}
 			}
@@ -219,8 +224,8 @@ public class Main{
 		for (int ii = 0; ii < game.getEntities().length; ii++){
 			Entity current = game.getEntities()[ii];
 			for(int jj = 0; jj < game.getEntities().length; jj++){
-				Entity another = game.getEntities()[jj];
-				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.collides(another)){ //TODO que sea la casilla entera y no el lugar especifico de colision
+				Entity another = game.getEntities()[jj]; //current.collides(another)
+				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.getPosition().tenthsToUnits().equals(another.getPosition().tenthsToUnits())){ //TODO que sea la casilla entera y no el lugar especifico de colision
 					game.getPlayer().takeDamage(((Enemy) another).getDamagetoPlayer());
 				}
 			}
