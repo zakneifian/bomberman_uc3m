@@ -273,7 +273,7 @@ public class Main{
 					((Balloon) current).animateMovement(((Balloon) current).getSpritePhase(), ((Balloon) current).getEntityDir());
 				}
 			}
-			else if (current instanceof Slime) {
+			if (current instanceof Slime) {
 				Coordinates playerPos = game.getPlayer().getPosition();
 				Coordinates slimePos  = current.getPosition();
 				if (slimePos.x > playerPos.x) { //if slime is to the right of player
@@ -297,8 +297,43 @@ public class Main{
 					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.UP, game.getMap());			
 				}
 				((Slime) current).animateMovement(((Slime) current).getSpritePhase(), ((Slime) current).getEntityDir());
-
+			}
+			if (current instanceof AntiBomberman) { //TODO funciona muy de vez en cuando, bug raro
+				String action = board.gb_getLastAction().trim();
+				if(action.length() > 0 && ((AntiBomberman) current).isAlive()){ 
+					//if movement
+					if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
+						((AntiBomberman) current).setEntityDir(action);
+						((AntiBomberman) current).animateMovement(((AntiBomberman) current).getSpritePhase(), ((AntiBomberman) current).getEntityDir());
+					}
+					switch(action){
+					case "up":
+						((AntiBomberman) current).moveTowards(Direction.UP, game.getMap());
+						if(((AntiBomberman) current).collides(game.getMap()))
+							((AntiBomberman) current).moveTowards(Direction.DOWN, game.getMap());
+						break;
+					case "down":
+						((AntiBomberman) current).moveTowards(Direction.DOWN, game.getMap());
+						if(((AntiBomberman) current).collides(game.getMap()))
+							((AntiBomberman) current).moveTowards(Direction.UP, game.getMap());
+						break;
+					case "left":
+						((AntiBomberman) current).moveTowards(Direction.LEFT, game.getMap());
+						if(((AntiBomberman) current).collides(game.getMap()))
+							((AntiBomberman) current).moveTowards(Direction.RIGHT, game.getMap());
+						break;
+					case "right":
+						((AntiBomberman) current).moveTowards(Direction.RIGHT, game.getMap());
+						if(((AntiBomberman) current).collides(game.getMap()))
+							((AntiBomberman) current).moveTowards(Direction.LEFT, game.getMap());
+						break;
+					case "space":
+						if (((AntiBomberman) current).putBomb()) {
+							addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
+						}
+					}
+				}
 			}
 		}
-	}
+	}	
 }
