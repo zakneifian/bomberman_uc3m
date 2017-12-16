@@ -7,17 +7,15 @@ public class Game{
 	private Map[] map = new Map[15];
 	private Entity[] entities;
 	private Player player;
-	private int level = 0;
+	private int level = 0; //TODO arreglar bug que no permite iniciar en niveles altos
 
 	public Game(int dim, String playerName){
 		//Generate upgrades of each level
 		player = new Player(Main.nextId(), playerName);
 		map[0] = new Map(dim, 0, getPlayerPersonalSpace(player));
-//		for(int ii = 0; ii < map.length; ii++){
-//			map[ii] = new Map(dim, ii);
-//		}
 		entities = new Entity[1];
 		entities[0] = player;
+		spawnEnemies();
 	}
 	public Map getMap(){
 		return map[level];
@@ -28,6 +26,7 @@ public class Game{
 			return false;
 		}
 		map[level] = new Map(Main.DIMENSION, level, getPlayerPersonalSpace(player));
+		spawnEnemies();
 		return true;
 	}
 	/**
@@ -133,6 +132,16 @@ public class Game{
 				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y     ),
 				   new Coordinates(player.getPosition().tenthsToUnits().x + 1, player.getPosition().tenthsToUnits().y - 1)};
 		return playerPersonalSpace;
+	}
+	
+	private void spawnEnemies( ) {
+		for (int ii = 0; ii < getMap().getEnemiesPos().length; ii++) {
+			for (int jj = 0; jj < getMap().getEnemiesPos()[ii].length; jj++) {
+				if (getMap().getEnemiesPos()[ii][jj] == "balloon") {
+					addEntity(new Balloon(Main.nextId(), new Coordinates(ii*10, jj*10)));
+				}
+			}
+		}
 	}
 }
 

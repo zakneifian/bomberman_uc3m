@@ -8,7 +8,7 @@ import uc3m.bomberman.map.*;
 
 public class Main{
 	public final static int DIMENSION = 17;
-	public final static double FPS = 60.0;
+	public final static double FPS = 120.0;
 	public final static int BOMB_TICK = 50;
 	public final static int EXP_TICK = 30;
 	

@@ -4,6 +4,7 @@ public class Map{
 	
 	private Tile[][] map;
 	private String[][] upgrades;
+	private String[][] enemies;
 	private Coordinates dim;
 	
 	
@@ -14,6 +15,7 @@ public class Map{
 	private void createMap(Coordinates[] playerPersonalSpace, int level){
 		map = new Tile[dim.x][dim.y];
 		upgrades = new String[dim.x][dim.y];
+		enemies = new String[dim.x][dim.y];
 		//Create green cells
 		for(int ii = 0; ii < map.length; ii++){
 			for(int jj = 0; jj < map[ii].length; jj++){
@@ -42,8 +44,10 @@ public class Map{
 			}
 		}
 		//determine the number of upgrades of each type depending on the level
-		genUpgrades(level);		
+		genUpgrades(level);
+		genEnemies(level);
 	}
+
 	/**
 	 * sends ticks to the appropiate tiles
 	 * @param x
@@ -147,7 +151,32 @@ public class Map{
 			}
 		}	
 	}
-	
+	private void genEnemies(int level) {
+		int balloon, slime;
+		balloon = (int) Math.floor(Math.random()*10 + 1);
+		slime = ((level > 1) && (level+1)%4 == 0) ? ((level + 1)/4 + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
+		while(balloon > 0){
+			for(int ii = 0; ii < enemies.length; ii++){
+				for(int jj = 0; jj < enemies[ii].length; jj++){
+					if(map[ii][jj].getType().equals("green") && (Math.random() < (double) balloon/(double) ((17*17)- 50)) && enemies[ii][jj] == null){
+						enemies[ii][jj] = "balloon";
+						balloon--;
+					}
+				}
+			}
+		}
+		while(slime > 0){
+			for(int ii = 0; ii < enemies.length; ii++){
+				for(int jj = 0; jj < enemies[ii].length; jj++){
+					if(map[ii][jj].getType().equals("green") && (Math.random() < (double) slime/(double) ((17*17)- 50)) && enemies[ii][jj] == null){
+						enemies[ii][jj] = "slime";
+						slime--;
+					}
+				}
+			}
+		}
+	}
+
 	//Get type of file
 	public String getTypeAt(int x, int y){
 		if(map[x][y] instanceof Explosion)
@@ -217,7 +246,7 @@ public class Map{
 	}
 	
 	public Tile getTileAt(int x, int y) {
-		return map[x][y];	
+		return map[x][y];	//TODO arreglar bug con explosiones
 	}
 	
 	private boolean isInPlayerPersonalSpace(Coordinates[] playerPersonalSpace, Coordinates coords) {
@@ -225,6 +254,9 @@ public class Map{
 			if (playerPersonalSpace[ii].equals(coords)) return true;
 		}
 		return false;
+	}
+	public String[][] getEnemiesPos() {
+		return enemies;
 	}
 
 }
