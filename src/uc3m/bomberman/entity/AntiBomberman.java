@@ -1,5 +1,6 @@
 package uc3m.bomberman.entity;
 
+import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
 
 public class AntiBomberman extends Enemy {
@@ -47,6 +48,40 @@ public class AntiBomberman extends Enemy {
 
 	public boolean putBomb(){
 		return true;
+	}
+	@Override
+	public void moveEnemy(Game game) {
+		moveEnemyAction(game, "up");
+	}
+	public void moveEnemyAction(Game game, String lastAction){
+		if(lastAction.length() > 0 && this.isAlive()){ 
+			//if movement
+			if (lastAction.equals("up") || lastAction.equals("down") || lastAction.equals("left") || lastAction.equals("right")) {
+				this.setEntityDir(lastAction);
+				this.animateMovement(this.getSpritePhase(), this.getEntityDir());
+			}
+			switch(lastAction){
+			case "up":
+				this.moveTowards(Direction.UP, game.getMap());
+				if(this.collides(game.getMap()))
+					this.moveTowards(Direction.DOWN, game.getMap());
+				break;
+			case "down":
+				this.moveTowards(Direction.DOWN, game.getMap());
+				if(this.collides(game.getMap()))
+					this.moveTowards(Direction.UP, game.getMap());
+				break;
+			case "left":
+				this.moveTowards(Direction.LEFT, game.getMap());
+				if(this.collides(game.getMap()))
+					this.moveTowards(Direction.RIGHT, game.getMap());
+				break;
+			case "right":
+				this.moveTowards(Direction.RIGHT, game.getMap());
+				if(this.collides(game.getMap()))
+					this.moveTowards(Direction.LEFT, game.getMap());
+			}
+		}
 	}
 	
 }

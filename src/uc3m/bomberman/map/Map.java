@@ -1,4 +1,7 @@
 package uc3m.bomberman.map;
+
+import uc3m.bomberman.entity.Bomb;
+
 public class Map{
 	public static final int NBRICKS = 50;
 	

@@ -1,6 +1,8 @@
 package uc3m.bomberman.entity;
 
+import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
+import uc3m.bomberman.map.Map;
 
 public abstract class Enemy extends MovableEntity{
 	int damagetoPlayer;
@@ -11,7 +13,7 @@ public abstract class Enemy extends MovableEntity{
 	public int getDamagetoPlayer() {
 		return damagetoPlayer;
 	}
-	
+	public abstract void moveEnemy(Game game);
 	@Override
 	public void animateMovement(int spritePhase, String[] entityDir) {
 		if (entityDir[1].equals(entityDir[0])) { //if the present movement equals the past one

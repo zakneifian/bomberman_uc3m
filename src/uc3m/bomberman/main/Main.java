@@ -45,7 +45,6 @@ public class Main{
 				collisionHandler(game, board);
 				checkAliveEntities(game, board);
 				checkIfNextLevel(game, board);
-				enemyMovementHandler(game, board, time);
 				
 				deltaTimeTick = 0;
 				timeTick = System.currentTimeMillis();
@@ -183,8 +182,14 @@ public class Main{
 					game.getPlayer().bombExploded();
 					removeEntity(game, board, bomb);
 				}
+			}else if(current instanceof Enemy){
+				((Enemy) current).moveEnemy(game);
+				if (current instanceof AntiBomberman) { //TODO funciona muy de vez en cuando, bug raro
+					((AntiBomberman) current).moveEnemyAction(game, board.gb_getLastAction());
+				}
 			}
 		}
+		
 		game.getMap().tickTiles();
 	}
 	public static void collisionHandler(Game game, GameBoardGUI board){
@@ -242,98 +247,4 @@ public class Main{
 			game.nextMap();
 		}
 	}
-	
-	public static void enemyMovementHandler(Game game, GameBoardGUI board, long time) {
-		for(int ii = 0; ii < game.getEntities().length; ii++){
-			Entity current = game.getEntities()[ii];
-			if(current instanceof Balloon){
-				if(System.currentTimeMillis() - time > -0.000000000000000000000000000000000000000000000000000000000000000000000001) {
-					int dir = (int) Math.floor(Math.random()*4);
-					if (dir == 0) {
-						((Balloon) current).moveTowards(Direction.UP, game.getMap());
-						((Balloon) current).setEntityDir("up");
-						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.DOWN, game.getMap());
-					}
-					else if (dir == 1) {
-						((Balloon) current).moveTowards(Direction.DOWN, game.getMap());
-						((Balloon) current).setEntityDir("down");
-						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.UP, game.getMap());
-					}
-					else if (dir == 2) {
-						((Balloon) current).moveTowards(Direction.LEFT, game.getMap());
-						((Balloon) current).setEntityDir("left");
-						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.RIGHT, game.getMap());
-					}
-					else if (dir == 3) {
-						((Balloon) current).moveTowards(Direction.RIGHT, game.getMap());
-						((Balloon) current).setEntityDir("right");
-						if(current.collides(game.getMap())) ((Balloon) current).moveTowards(Direction.LEFT, game.getMap());
-					}
-
-					((Balloon) current).animateMovement(((Balloon) current).getSpritePhase(), ((Balloon) current).getEntityDir());
-				}
-			}
-			if (current instanceof Slime) {
-				Coordinates playerPos = game.getPlayer().getPosition();
-				Coordinates slimePos  = current.getPosition();
-				if (slimePos.x > playerPos.x) { //if slime is to the right of player
-					((Slime) current).moveTowards(Direction.LEFT, game.getMap());
-					((Slime) current).setEntityDir("left");
-					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.RIGHT, game.getMap());			
-				}
-				if (slimePos.x < playerPos.x) { //if slime is to the left of player
-					((Slime) current).moveTowards(Direction.RIGHT, game.getMap());
-					((Slime) current).setEntityDir("right");
-					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.LEFT, game.getMap());					
-				}
-				if (slimePos.y > playerPos.y) { //if slime is above slime
-					((Slime) current).moveTowards(Direction.UP, game.getMap());
-					((Slime) current).setEntityDir("down");
-					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.DOWN, game.getMap());			
-				}
-				if (slimePos.y < playerPos.y) { //if slime is below slime
-					((Slime) current).moveTowards(Direction.DOWN, game.getMap());
-					((Slime) current).setEntityDir("up");
-					if(current.collides(game.getMap())) ((Slime) current).moveTowards(Direction.UP, game.getMap());			
-				}
-				((Slime) current).animateMovement(((Slime) current).getSpritePhase(), ((Slime) current).getEntityDir());
-			}
-			if (current instanceof AntiBomberman) { //TODO funciona muy de vez en cuando, bug raro
-				String action = board.gb_getLastAction().trim();
-				if(action.length() > 0 && ((AntiBomberman) current).isAlive()){ 
-					//if movement
-					if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
-						((AntiBomberman) current).setEntityDir(action);
-						((AntiBomberman) current).animateMovement(((AntiBomberman) current).getSpritePhase(), ((AntiBomberman) current).getEntityDir());
-					}
-					switch(action){
-					case "up":
-						((AntiBomberman) current).moveTowards(Direction.UP, game.getMap());
-						if(((AntiBomberman) current).collides(game.getMap()))
-							((AntiBomberman) current).moveTowards(Direction.DOWN, game.getMap());
-						break;
-					case "down":
-						((AntiBomberman) current).moveTowards(Direction.DOWN, game.getMap());
-						if(((AntiBomberman) current).collides(game.getMap()))
-							((AntiBomberman) current).moveTowards(Direction.UP, game.getMap());
-						break;
-					case "left":
-						((AntiBomberman) current).moveTowards(Direction.LEFT, game.getMap());
-						if(((AntiBomberman) current).collides(game.getMap()))
-							((AntiBomberman) current).moveTowards(Direction.RIGHT, game.getMap());
-						break;
-					case "right":
-						((AntiBomberman) current).moveTowards(Direction.RIGHT, game.getMap());
-						if(((AntiBomberman) current).collides(game.getMap()))
-							((AntiBomberman) current).moveTowards(Direction.LEFT, game.getMap());
-						break;
-					case "space":
-						if (((AntiBomberman) current).putBomb()) {
-							addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
-						}
-					}
-				}
-			}
-		}
-	}	
 }
