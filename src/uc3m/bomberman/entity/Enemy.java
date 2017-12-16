@@ -13,6 +13,14 @@ public abstract class Enemy extends MovableEntity{
 	public int getDamagetoPlayer() {
 		return damagetoPlayer;
 	}
+	
+	@Override
+	public void onCollision(Entity col) {
+		if(col instanceof Player && alive){
+			col.takeDamage(this.getDamagetoPlayer());
+		}		
+	}
+	
 	public abstract void moveEnemy(Game game);
 	@Override
 	public void animateMovement(int spritePhase, String[] entityDir) {

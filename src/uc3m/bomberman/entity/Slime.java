@@ -8,13 +8,6 @@ public class Slime extends Enemy {
 	public Slime(int id, Coordinates position) {
 		super(id, "enemy211.png", 100, position, 3, 10);
 		this.speed = 1;
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void onCollision(Entity col) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

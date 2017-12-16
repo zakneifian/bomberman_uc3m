@@ -5,7 +5,7 @@ import uc3m.bomberman.map.*;
 
 public class Bomb extends Entity{
 	private final int TICK_TIME = 100;
-	private int maxTicks = Main.BOMB_TICK;
+	private int maxTicks = (int) (Main.BOMB_TIME*1000/TICK_TIME);
 	private long time;
 	
 	public Bomb(int id, Coordinates pos) {

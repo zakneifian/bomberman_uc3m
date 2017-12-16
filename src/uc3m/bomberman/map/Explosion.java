@@ -7,7 +7,7 @@ public class Explosion extends Tile {
 	private char type;
 
 	private final int TICK_TIME = 50;
-	private int maxTicks = Main.EXP_TICK;
+	private int maxTicks = (int) (Main.EXP_TIME*1000/TICK_TIME);
 	private long time;
 		
 	private final int MAX_PHASE = 4;

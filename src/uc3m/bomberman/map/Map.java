@@ -265,7 +265,6 @@ public class Map{
 		return map[x][y]; //TODO bug cuyo motivo no se que triggerea al explotar
 
 	}
-	
 	private boolean isInPlayerPersonalSpace(Coordinates[] playerPersonalSpace, Coordinates coords) {
 		for (int ii = 0; ii < playerPersonalSpace.length; ii++ ) {
 			if (playerPersonalSpace[ii].equals(coords)) return true;

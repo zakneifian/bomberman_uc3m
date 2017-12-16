@@ -32,7 +32,7 @@ public class Entity{
 	 * @return True if the current entity collides with the parameter; false otherwise
 	 */
 	public boolean collides(Entity col){
-		return col.getPosition().x == this.position.x && col.getPosition().y == this.position.y;
+		return col.getPosition().tenthsToUnits().x == this.position.tenthsToUnits().x && col.getPosition().tenthsToUnits().y == this.position.tenthsToUnits().y;
 	}
 	/**
 	 * Checks the collisions with the map

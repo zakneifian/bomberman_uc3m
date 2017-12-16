@@ -7,13 +7,6 @@ public class AntiBomberman extends Enemy {
 
 	public AntiBomberman(int id, Coordinates position) {
 		super(id, "Antibomberman111.png", 1000, position, 3, 50);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void onCollision(Entity col) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

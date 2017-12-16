@@ -9,10 +9,11 @@ import uc3m.bomberman.map.*;
 public class Main{
 	public final static int DIMENSION = 17;
 	public final static double FPS = 60.0;
-	public final static int BOMB_TICK = 50;
-	public final static int EXP_TICK = 30;
+	public final static double BOMB_TIME = 4;
+	public final static double EXP_TIME = 1;
 	
 	private static int NEXT_ID = 0;
+	private static boolean running = true;
 	
 	public static final int nextId(){
 		return ++NEXT_ID;
@@ -21,48 +22,50 @@ public class Main{
 	public static void main(String[] args) throws InterruptedException{
 		
 		Locale.setDefault(new Locale("en"));
-		Game game = new Game(DIMENSION, "Bomberman");
-		boolean running = true;
 		
 		//Create board
 		GameBoardGUI board = new GameBoardGUI(DIMENSION, DIMENSION);
-		prerender(game, board);
+		Game game = newGame("Bomberman", board);
 
 		long time = System.currentTimeMillis();
 		long timeTick = time;
 		long deltaTime = 0;
 		long deltaTimeTick = 0;
-		
-		while(running){ //TODO este boolean deberia ser una variable
-			if(deltaTime > 1000.0/FPS){ //Esto son los fps
-				render(game, board);
-				deltaTime = 0;
-				time = System.currentTimeMillis();
+		do{
+			while(running){
+				if(deltaTime > 1000.0/FPS){ //Esto son los fps
+					render(game, board);
+					deltaTime = 0;
+					time = System.currentTimeMillis();
+				}
+				if(deltaTimeTick > 1000.0/FPS){ //Esto son los ticks
+					eventHandler(game, board);
+					tickHandler(game, board);
+					collisionHandler(game, board);
+					checkAliveEntities(game, board);
+					checkIfNextLevel(game, board);
+					
+					deltaTimeTick = 0;
+					timeTick = System.currentTimeMillis();
+				}
+				deltaTime = System.currentTimeMillis()-time;
+				deltaTimeTick = System.currentTimeMillis()-timeTick;
+				//Let's not burn up the CPU
+				Thread.sleep(25);
 			}
-			if(deltaTimeTick > 1000.0/FPS){ //Esto son los ticks
-				eventHandler(game, board);
-				tickHandler(game, board);
-				collisionHandler(game, board);
-				checkAliveEntities(game, board);
-				checkIfNextLevel(game, board);
-				
-				deltaTimeTick = 0;
-				timeTick = System.currentTimeMillis();
-			}
-			deltaTime = System.currentTimeMillis()-time;
-			deltaTimeTick = System.currentTimeMillis()-timeTick;
-			//Let's not burn up the CPU
-			Thread.sleep(25);
-		}
+			//TODO esperar nuevo juego
+		}while(true);
 		
 	}
-
+	public static Game newGame(String name, GameBoardGUI board){
+		Game game = new Game(DIMENSION, name);
+		prerender(game, board);
+		return game;
+	}
 	public static void prerender(Game game, GameBoardGUI board){
-		
+
 		board.setVisible(true);
-		for(int ii = 0; ii < game.getEntities().length; ii++){
-			board.gb_addSprite(game.getEntities()[ii].getId(), game.getEntities()[ii].getSprite(), true);	
-		}		
+		loadEntities(game, board);
 		board.gb_setTextAbility1("Bomb range");
 		board.gb_setTextAbility2("Player speed");
 		board.gb_setTextPointsDown("Bombs");
@@ -123,7 +126,7 @@ public class Main{
 		for(int ii = entities.length - 1; ii > -1; ii--){ // que lo ultimo en ser renderizado sea el jugador
 			Entity current = entities[ii];
 			if(current.isAlive()){
-				board.gb_addSprite(current.getId(), current.getSprite(), true);
+				board.gb_setSpriteImage(current.getId(), current.getSprite());
 				board.gb_moveSpriteCoord(current.getId(), current.getPosition().x, current.getPosition().y);
 				board.gb_setSpriteVisible(current.getId(), current.isAlive());
 			}
@@ -225,8 +228,8 @@ public class Main{
 			Entity current = game.getEntities()[ii];
 			for(int jj = 0; jj < game.getEntities().length; jj++){
 				Entity another = game.getEntities()[jj];
-				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.getPosition().tenthsToUnits().equals(another.getPosition().tenthsToUnits())){
-					game.getPlayer().takeDamage(((Enemy) another).getDamagetoPlayer());
+				if(current instanceof MovableEntity && current.collides(another)){
+					((MovableEntity) current).onCollision(another);
 				}
 			}
 		}		
@@ -237,7 +240,7 @@ public class Main{
 			Entity current = game.getEntities()[ii];
 			if (current instanceof Enemy && current.isAlive()) enemyN++;
 			if (current instanceof Player && !current.isAlive()) {
-				//TODO perder
+				gameOver(game, board);				
 			}
 			if(!current.isAlive())
 				removeEntity(game, board, current);
@@ -250,6 +253,24 @@ public class Main{
 		if (!game.getPlayer().getEnemiesAlive() && game.getPlayer().getOpenedDoorOnTouch()) {
 			game.getPlayer().setOpenedDoorOnTouch(false);
 			game.nextMap();
+			loadEntities(game, board);
 		}
+	}
+	public static void gameOver(Game game, GameBoardGUI board){
+		for(int jj = 0; jj < 5; jj++){
+			board.gb_setSpriteImage(game.getPlayer().getId(), "bomberman14"+(jj+1)+".png");
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		board.gb_showMessageDialog("Game over!\nScore: "+game.getPlayer().getScore());
+		running = false;
+	}
+	public static void loadEntities(Game game, GameBoardGUI board){
+		for(int ii = 0; ii < game.getEntities().length; ii++){
+			board.gb_addSprite(game.getEntities()[ii].getId(), game.getEntities()[ii].getSprite(), true);	
+		}		
 	}
 }

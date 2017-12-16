@@ -17,12 +17,6 @@ public class Balloon extends Enemy {
 	}
 
 	@Override
-	public void onCollision(Entity col) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void moveEnemy(Game game) {
 		if(time > TICK_TIME){
 			if (dir == 0) {

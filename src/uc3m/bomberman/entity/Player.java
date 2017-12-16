@@ -8,7 +8,7 @@ public class Player extends MovableEntity{
 	private int range = 2;
 	private String name = "bomberman";
 	private int score = 0;
-	private int damage = 10; //TODO esto es una variable, así que debería variar
+	private int damage = 10;
 	private boolean remote = false;
 
 	private boolean enemiesAlive = true;
@@ -24,7 +24,9 @@ public class Player extends MovableEntity{
 	}
 	@Override
 	public void onCollision(Entity col) {
-		// TODO Colision con otras entidades		
+		if(col instanceof Enemy && alive){
+			col.takeDamage(this.getDamage());
+		}
 	}
 
 	public void upgrade(String type){

@@ -9,9 +9,11 @@ public class Game{
 	private Player player;
 	private int level = 0; //TODO arreglar bug que no permite iniciar en niveles altos
 	private String playerAction;
-
+	
 	public Game(int dim, String playerName){
 		//Generate upgrades of each level
+		if(playerName == null || playerName.equals(""))
+			playerName = "Bomberman";
 		player = new Player(Main.nextId(), playerName);
 		map[0] = new Map(dim, 0, getPlayerPersonalSpace(player));
 		entities = new Entity[1];
@@ -67,7 +69,23 @@ public class Game{
 		}
 		return false;
 	}
-	
+	public void spawnEnemies() {
+		for (int ii = 0; ii < getMap().getEnemiesPos().length; ii++) {
+			for (int jj = 0; jj < getMap().getEnemiesPos()[ii].length; jj++) {
+				if(getMap().getEnemiesPos()[ii][jj] != null){
+					if (getMap().getEnemiesPos()[ii][jj].equals("balloon")) {
+						addEntity(new Balloon(Main.nextId(), new Coordinates(ii*10, jj*10)));
+					}
+					else if (getMap().getEnemiesPos()[ii][jj].equals("slime")) {
+						addEntity(new Slime(Main.nextId(), new Coordinates(ii*10, jj*10)));
+					}
+					else if (getMap().getEnemiesPos()[ii][jj].equals("anti")) {
+						addEntity(new AntiBomberman(Main.nextId(), new Coordinates(ii*10, jj*10)));
+					}
+				}
+			}
+		}
+	}
 	public void explodeAt(Coordinates bombPos){
 		int explosionLength = getPlayer().getRange();
 //		String orientation = "";
@@ -86,10 +104,10 @@ public class Game{
 			arrExplosive[2][ii] = new Coordinates(square.x, square.y - ii); //South
 			arrExplosive[3][ii] = new Coordinates(square.x + ii, square.y); //East
 			//Taking into account the limits of the walls
-			if (!wallN && getMap().getTypeAt(arrExplosive[0][ii]).equals("wall")) wallN = true;
-			if (!wallW && getMap().getTypeAt(arrExplosive[1][ii]).equals("wall")) wallW = true;
-			if (!wallS && getMap().getTypeAt(arrExplosive[2][ii]).equals("wall")) wallS = true;
-			if (!wallE && getMap().getTypeAt(arrExplosive[3][ii]).equals("wall")) wallE = true;
+			if (!wallN && ii > 0 && getMap().getTypeAt(arrExplosive[0][ii]).equals("wall")) wallN = true;
+			if (!wallW && ii < getMap().getDimensions().x && getMap().getTypeAt(arrExplosive[1][ii]).equals("wall")) wallW = true;
+			if (!wallS && ii < getMap().getDimensions().y && getMap().getTypeAt(arrExplosive[2][ii]).equals("wall")) wallS = true;
+			if (!wallE && ii > 0 && getMap().getTypeAt(arrExplosive[3][ii]).equals("wall")) wallE = true;
 			//Setting sprites
 			getMap().setExplosionAt(square, "c");
 			if (!wallN && !(getMap().getTileAt(arrExplosive[0][ii]) instanceof Upgrade)) {
@@ -135,21 +153,7 @@ public class Game{
 		return playerPersonalSpace;
 	}
 
-	private void spawnEnemies( ) {
-		for (int ii = 0; ii < getMap().getEnemiesPos().length; ii++) {
-			for (int jj = 0; jj < getMap().getEnemiesPos()[ii].length; jj++) {
-				if (getMap().getEnemiesPos()[ii][jj] == "balloon") {
-					addEntity(new Balloon(Main.nextId(), new Coordinates(ii*10, jj*10)));
-				}
-				else if (getMap().getEnemiesPos()[ii][jj] == "slime") {
-					addEntity(new Slime(Main.nextId(), new Coordinates(ii*10, jj*10)));
-				}
-				else if (getMap().getEnemiesPos()[ii][jj] == "anti") {
-					addEntity(new AntiBomberman(Main.nextId(), new Coordinates(ii*10, jj*10)));
-				}
-			}
-		}
-	}
+	
 	public String getPlayerAction() {
 		return playerAction;
 	}
