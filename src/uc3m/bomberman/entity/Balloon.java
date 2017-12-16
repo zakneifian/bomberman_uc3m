@@ -11,7 +11,7 @@ public class Balloon extends Enemy {
 	private long time;
 	
 	public Balloon(int id, Coordinates position) {
-		super(id, "enemy111.png", 50, position, 3, 10);
+		super(id, "enemy111.png", 50, position, 3, 2);
 		speed = 1;
 		time = System.currentTimeMillis();
 	}

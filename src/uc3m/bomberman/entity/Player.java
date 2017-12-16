@@ -24,9 +24,6 @@ public class Player extends MovableEntity{
 	}
 	@Override
 	public void onCollision(Entity col) {
-		if(col instanceof Enemy && alive){
-			col.takeDamage(this.getDamage());
-		}
 	}
 
 	public void upgrade(String type){
