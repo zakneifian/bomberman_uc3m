@@ -267,7 +267,22 @@ public class Main{
 					((Balloon) current).animateMovement(((Balloon) current).getSpritePhase(), ((Balloon) current).getEntityDir());
 				}
 			}
-			else if (current instanceof Slime) {}
+			else if (current instanceof Slime) {
+				Coordinates playerPos = game.getPlayer().getPosition();
+				Coordinates slimePos  = current.getPosition();
+				if      (slimePos.x > playerPos.x && slimePos.y > playerPos.y) {
+					
+				}
+				else if (slimePos.x > playerPos.x && slimePos.y < playerPos.y) {
+					
+				}
+				else if (slimePos.x < playerPos.x && slimePos.y > playerPos.y) {
+					
+				}
+				else if (slimePos.x < playerPos.x && slimePos.y < playerPos.y) {
+					
+				}
+			}
 		}
 	}
 }

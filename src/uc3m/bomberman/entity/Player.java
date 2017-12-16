@@ -3,9 +3,9 @@ package uc3m.bomberman.entity;
 import uc3m.bomberman.map.*;
 
 public class Player extends MovableEntity{
-	private int bombs = 5;
-	private int maxBombs = 5;
-	private int range = 7;
+	private int bombs = 1;
+	private int maxBombs = 1;
+	private int range = 2;
 	private String name = "bomberman";
 	private int score = 0;
 	private int damage = 10; //TODO esto es una variable, así que debería variar
