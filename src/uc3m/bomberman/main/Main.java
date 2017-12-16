@@ -224,8 +224,8 @@ public class Main{
 		for (int ii = 0; ii < game.getEntities().length; ii++){
 			Entity current = game.getEntities()[ii];
 			for(int jj = 0; jj < game.getEntities().length; jj++){
-				Entity another = game.getEntities()[jj]; //current.collides(another)
-				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.getPosition().tenthsToUnits().equals(another.getPosition().tenthsToUnits())){ //TODO que sea la casilla entera y no el lugar especifico de colision
+				Entity another = game.getEntities()[jj];
+				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.getPosition().tenthsToUnits().equals(another.getPosition().tenthsToUnits())){
 					game.getPlayer().takeDamage(((Enemy) another).getDamagetoPlayer());
 				}
 			}

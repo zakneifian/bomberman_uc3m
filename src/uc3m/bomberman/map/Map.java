@@ -158,9 +158,9 @@ public class Map{
 		int balloon, slime, antibomberman;
 		balloon = (int) Math.floor(Math.random()*10 + 1);  
 		//slime = (level > 0 || (level+1)%4 == 0) ? ((level + 1)/4  + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
-		//antibomberman = Math.random()*100 < 1 ? 1 : 0;
+		antibomberman = Math.random()*100 < 1 ? 1 : 0;
 		slime = 1;
-		antibomberman = 1;
+
 		while(balloon > 0){
 			for(int ii = 0; ii < enemies.length; ii++){
 				for(int jj = 0; jj < enemies[ii].length; jj++){
