@@ -163,6 +163,12 @@ public class Main{
 				if (game.getPlayer().putBomb()) {
 					addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
 				}
+			case "tab":
+				//TODO explotar todas las bombas presentes
+			case "new  game  <player  name>":
+				//TODO new game
+			case "command  <thecommand>":
+				//TODO comandos
 			}
 		}
 	}
@@ -209,7 +215,7 @@ public class Main{
 			Entity current = game.getEntities()[ii];
 			for(int jj = 0; jj < game.getEntities().length; jj++){
 				Entity another = game.getEntities()[jj];
-				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.collides(another)){
+				if(current.isAlive() && another.isAlive() && current instanceof Player && another instanceof Enemy && current.collides(another)){ //TODO que sea la casilla entera y no el lugar especifico de colision
 					game.getPlayer().takeDamage(((Enemy) another).getDamagetoPlayer());
 				}
 			}
