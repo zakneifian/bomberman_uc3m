@@ -1,7 +1,5 @@
 package uc3m.bomberman.map;
 
-import uc3m.bomberman.entity.Bomb;
-
 public class Map{
 	public static final int NBRICKS = 50;
 	
@@ -158,8 +156,15 @@ public class Map{
 		int balloon, slime, antibomberman;
 		balloon = (int) Math.floor(Math.random()*10 + 1);  
 		//slime = (level > 0 || (level+1)%4 == 0) ? ((level + 1)/4  + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
+		slime = 0;
+		if(level > 0){
+			if(level == 1){
+				slime = 1;
+			}else if (((level+1)%4) == 0){
+				slime = 1 + (level+1)/4;
+			}
+		}
 		antibomberman = Math.random()*100 < 1 ? 1 : 0;
-		slime = 1;
 
 		while(balloon > 0){
 			for(int ii = 0; ii < enemies.length; ii++){

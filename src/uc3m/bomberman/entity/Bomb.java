@@ -5,7 +5,7 @@ import uc3m.bomberman.map.*;
 
 public class Bomb extends Entity{
 	private final int TICK_TIME = 100;
-	private int maxTicks = (int) (Main.BOMB_TIME*1000/TICK_TIME);
+	private int maxTicks = (int) (Main.BOMB_TIME/TICK_TIME);
 	private long time;
 	
 	public Bomb(int id, Coordinates pos) {
@@ -21,9 +21,9 @@ public class Bomb extends Entity{
 				this.setSprite("bomb1.gif");
 			}
 			time = System.currentTimeMillis();
-		}
-		if(--maxTicks <= 0){
-			return true;
+			if(--maxTicks <= 0){
+				return true;
+			}
 		}
 		return false;
 	}

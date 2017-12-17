@@ -9,8 +9,8 @@ import uc3m.bomberman.map.*;
 public class Main{
 	public final static int DIMENSION = 17;
 	public final static double FPS = 60.0;
-	public final static double BOMB_TIME = 4;
-	public final static double EXP_TIME = 1;
+	public final static double BOMB_TIME = 3000;
+	public final static double EXP_TIME = 1500;
 	
 	private static int NEXT_ID = 0;
 	private static boolean running = true;
@@ -96,7 +96,7 @@ public class Main{
 		board.gb_setValueHealthCurrent(game.getPlayer().getHp());
 		board.gb_setValueAbility1(game.getPlayer().getRange());
 		board.gb_setValueAbility2(game.getPlayer().getSpeed());
-		board.gb_setValueLevel(game.getLevel());
+		board.gb_setValueLevel(game.getLevel()+1);
 		board.gb_setValuePointsDown(game.getPlayer().getBombs());
 		board.gb_setValuePointsUp(game.getPlayer().getScore());
 	}
@@ -170,8 +170,18 @@ public class Main{
 						if (current instanceof AntiBomberman) addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
 					}
 				}
+				break;
 			case "tab":
-				//TODO explotar todas las bombas presentes
+				for(int ii = 0; ii < game.getEntities().length; ii++){
+					Entity current = game.getEntities()[ii];
+					if(current instanceof Bomb){
+						Bomb bomb = (Bomb) current;
+						game.explodeAt(bomb.getPosition());
+						game.getPlayer().bombExploded();
+						removeEntity(game, board, bomb);
+					}
+				}
+				break;
 			case "new  game  <player  name>":
 				//TODO new game
 			case "command  <thecommand>":
@@ -185,16 +195,16 @@ public class Main{
 			//Handle the ticks
 			if(current instanceof Bomb){
 				Bomb bomb = (Bomb) current;
-				if(bomb.tick()){
+				if(bomb.tick() && !game.getPlayer().isRemote()){
 					game.explodeAt(bomb.getPosition());
 					game.getPlayer().bombExploded();
 					removeEntity(game, board, bomb);
 				}
 			}else if(current instanceof Enemy){
-				((Enemy) current).moveEnemy(game);
 				if (current instanceof AntiBomberman) {
 					((AntiBomberman) current).moveEnemyAction(game, board.gb_getLastAction());
-				}
+				}else
+					((Enemy) current).moveEnemy(game);				
 			}
 		}
 		
