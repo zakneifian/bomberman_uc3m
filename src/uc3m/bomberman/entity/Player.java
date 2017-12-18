@@ -13,10 +13,13 @@ public class Player extends MovableEntity{
 
 	private boolean enemiesAlive = true;
 	private boolean openedDoorOnTouch = false;
+	private boolean god = false;
+	private boolean clip = true;
 	
 	public Player(int id, String name){
 		super(id, "bomberman111.png", 100, new Coordinates(10, 10), 5); //5 es la cantidad de sprites que tiene por direccion de movimiento
 		this.name = name;												//ej, el slime/balloon seria 3.
+		this.speed = 2;
 	}
 	
 	public void resetPlayerPos() {
@@ -25,7 +28,21 @@ public class Player extends MovableEntity{
 	@Override
 	public void onCollision(Entity col) {
 	}
-
+	@Override
+	public void takeDamage(int dmg){
+		if(!god) super.takeDamage(dmg);
+	}
+	@Override
+	public boolean collides(Map map){
+		if(clip) return super.collides(map);
+		return false;
+	}
+	public void toggleGod(){
+		god = !god;
+	}
+	public void toggleClip(){
+		clip = !clip;
+	}
 	public void upgrade(String type){
 		switch(type){
 		case "bomb":

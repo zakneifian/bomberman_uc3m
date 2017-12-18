@@ -8,9 +8,11 @@ import uc3m.bomberman.map.*;
 
 public class Main{
 	public final static int DIMENSION = 17;
+	public final static int NLEVEL = 15;
 	public final static double FPS = 60.0;
-	public final static double BOMB_TIME = 3000;
-	public final static double EXP_TIME = 1500;
+	public final static double TPS = 30.0;
+	public final static double BOMB_TIME = 2000;
+	public final static double EXP_TIME = 1000;
 	
 	private static int NEXT_ID = 0;
 	private static boolean running = true;
@@ -25,7 +27,7 @@ public class Main{
 		
 		//Create board
 		GameBoardGUI board = new GameBoardGUI(DIMENSION, DIMENSION);
-		Game game = newGame("Bomberman", board);
+		Game game = newGame("Bomberman", board, NLEVEL);
 
 		long time = System.currentTimeMillis();
 		long timeTick = time;
@@ -38,8 +40,10 @@ public class Main{
 					deltaTime = 0;
 					time = System.currentTimeMillis();
 				}
-				if(deltaTimeTick > 1000.0/FPS){ //Esto son los ticks
-					eventHandler(game, board);
+				if(deltaTimeTick > 1000.0/TPS){ //Esto son los ticks
+					String newGameName = eventHandler(game, board);
+					if(!newGameName.equals(""))
+						game = newGame(newGameName, board, NLEVEL);
 					tickHandler(game, board);
 					collisionHandler(game, board);
 					checkAliveEntities(game, board);
@@ -53,12 +57,17 @@ public class Main{
 				//Let's not burn up the CPU
 				Thread.sleep(25);
 			}
+			String newGameName = eventHandler(game, board);
+			if(!newGameName.equals("")){
+				game = newGame(newGameName, board, NLEVEL);
+				running = true;
+			}
 			//TODO esperar nuevo juego
 		}while(true);
 		
 	}
-	public static Game newGame(String name, GameBoardGUI board){
-		Game game = new Game(DIMENSION, name);
+	public static Game newGame(String name, GameBoardGUI board, int nLevels){
+		Game game = new Game(DIMENSION, name, nLevels);
 		prerender(game, board);
 		return game;
 	}
@@ -132,7 +141,13 @@ public class Main{
 			}
 		}
 	}
-	public static void eventHandler(Game game, GameBoardGUI board){
+	/**
+	 *
+	 * @param game
+	 * @param board
+	 * @return If a new game has been ordered creating, it returns the name of the new game. Else, it returns ""
+	 */
+	public static String eventHandler(Game game, GameBoardGUI board){
 		String action = board.gb_getLastAction().trim();
 		game.setPlayerAction(action);
 		if(action.length() > 0 && game.getPlayer().isAlive()){ 
@@ -172,22 +187,27 @@ public class Main{
 				}
 				break;
 			case "tab":
-				for(int ii = 0; ii < game.getEntities().length; ii++){
-					Entity current = game.getEntities()[ii];
-					if(current instanceof Bomb){
-						Bomb bomb = (Bomb) current;
-						game.explodeAt(bomb.getPosition());
-						game.getPlayer().bombExploded();
-						removeEntity(game, board, bomb);
+				detonateAllBombs(game, board);
+				break;
+			default:
+				if(action.contains("command ")){
+					try{
+						String command = action.substring(8);
+						commandParser(game, board, command);
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
+				}else if(action.contains("new game ")){
+					try{
+						String gameName = action.substring(9);
+						return gameName;
+					}catch(Exception ex){
+						ex.printStackTrace();
 					}
 				}
-				break;
-			case "new  game  <player  name>":
-				//TODO new game
-			case "command  <thecommand>":
-				//TODO comandos
 			}
 		}
+		return "";
 	}
 	public static void tickHandler(Game game, GameBoardGUI board){
 		for(int ii = 0; ii < game.getEntities().length; ii++){
@@ -253,8 +273,10 @@ public class Main{
 				gameOver(game, board);				
 			}
 			if(!current.isAlive()){
-				if(current instanceof Enemy)
+				if(current instanceof Enemy){
+					board.gb_println("Enemy "+current.getId()+" killed. +"+((Enemy) current).getScoreOnDeath()+" points.");
 					game.getPlayer().addScore(((Enemy) current).getScoreOnDeath());
+				}
 				removeEntity(game, board, current);
 			}
 		}
@@ -268,6 +290,7 @@ public class Main{
 			game.nextMap();
 			loadEntities(game, board);
 		}
+		//TODO que la consola te diga que hay enemigos cuando no puedes cruzar la puerta
 	}
 	public static void gameOver(Game game, GameBoardGUI board){
 		for(int jj = 0; jj < 5; jj++){
@@ -282,8 +305,66 @@ public class Main{
 		running = false;
 	}
 	public static void loadEntities(Game game, GameBoardGUI board){
+		board.gb_clearSprites();
 		for(int ii = 0; ii < game.getEntities().length; ii++){
 			board.gb_addSprite(game.getEntities()[ii].getId(), game.getEntities()[ii].getSprite(), true);	
 		}		
+	}
+	public static void detonateAllBombs(Game game, GameBoardGUI board){
+		for(int ii = 0; ii < game.getEntities().length; ii++){
+			Entity current = game.getEntities()[ii];
+			if(current instanceof Bomb){
+				Bomb bomb = (Bomb) current;
+				game.explodeAt(bomb.getPosition());
+				game.getPlayer().bombExploded();
+				removeEntity(game, board, bomb);
+			}
+		}
+	}
+	/**
+	 * 
+	 * @param game
+	 * @param board
+	 * @param command
+	 * @return If a new game has been ordered creating, it returns the name of the new game. Else, it returns ""
+	 */
+	public static void commandParser(Game game, GameBoardGUI board, String command){
+		switch(command){
+		case "explore":
+			game.getMap().toggleExploreMode();
+			board.gb_println("Explore mode toggled");
+			break;
+		case "new":
+			game.recreateCurrentLevel();
+			board.gb_println("New map created");
+			break;
+		case "god":
+			game.getPlayer().toggleGod();
+			board.gb_println("God mode toggled");
+			break;
+		case "noclip":
+			game.getPlayer().toggleClip();
+			board.gb_println("Clip mode toggled");
+			break;
+		case "detonate":
+			detonateAllBombs(game, board);
+			board.gb_println("All placed bombs detonated");
+			break;
+		case "clear":
+			board.gb_clearCommandBar();
+			break;
+		default:
+			if(command.contains("level")){
+				try{
+					int level = Integer.parseInt(command.substring(5))-1;
+					game.setMap(level);
+					loadEntities(game, board);
+					board.gb_println("Loaded level "+level);
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}
+		}
+		board.gb_clearCommandBar();
 	}
 }

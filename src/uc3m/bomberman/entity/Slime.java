@@ -16,18 +16,15 @@ public class Slime extends Enemy {
 			this.moveTowards(Direction.LEFT, game.getMap());
 			this.setEntityDir("left");
 			if(this.collides(game.getMap())) this.moveTowards(Direction.RIGHT, game.getMap());			
-		}
-		if (this.position.x < game.getPlayer().getPosition().x) { //if slime is to the left of player
+		}else if (this.position.x < game.getPlayer().getPosition().x) { //if slime is to the left of player
 			this.moveTowards(Direction.RIGHT, game.getMap());
 			this.setEntityDir("right");
 			if(this.collides(game.getMap())) this.moveTowards(Direction.LEFT, game.getMap());					
-		}
-		if (this.position.y > game.getPlayer().getPosition().y) { //if slime is above slime
+		}else if (this.position.y > game.getPlayer().getPosition().y) { //if slime is above slime
 			this.moveTowards(Direction.UP, game.getMap());
 			this.setEntityDir("down");
 			if(this.collides(game.getMap())) this.moveTowards(Direction.DOWN, game.getMap());			
-		}
-		if (this.position.y < game.getPlayer().getPosition().y) { //if slime is below slime
+		}else if (this.position.y < game.getPlayer().getPosition().y) { //if slime is below slime
 			this.moveTowards(Direction.DOWN, game.getMap());
 			this.setEntityDir("up");
 			if(this.collides(game.getMap())) this.moveTowards(Direction.UP, game.getMap());			

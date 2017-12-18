@@ -8,6 +8,7 @@ public class Map{
 	private String[][] enemies;
 	private Coordinates dim;
 	
+	private boolean explore = false;
 	
 	public Map(int dim, int level, Coordinates[] playerPersonalSpace){
 		this.dim = new Coordinates(dim, dim);
@@ -64,7 +65,6 @@ public class Map{
 						//TODO UPGRADE Aquí desaparecen las explosiones, así que:
 						if(upgrades[ii][jj] != null){
 							map[ii][jj] = new Upgrade(upgrades[ii][jj]);
-							upgrades[ii][jj] = null;
 						}
 					}
 				}
@@ -78,8 +78,8 @@ public class Map{
 		fire = 1;
 		special = (level+1)%5 == 0 ? 1 : 0;
 		remote = (level+1)%10 == 0 ? 1 : 0;
-		skate = (level+1)%2 == 0 ? (int)(Math.random()*2) : 0;
-		geta = Math.random()<0.2 ? 1 : 0;
+		skate = (level+1)%2 == 0 ? (int)(Math.random()*2) : 0; //50% chance
+		geta = Math.random()<0.2 ? 1 : 0; //20% chance
 		door = 1;
 		while(bomb > 0){
 			for(int ii = 0; ii < upgrades.length; ii++){
@@ -155,14 +155,9 @@ public class Map{
 	private void genEnemies(int level) {
 		int balloon, slime, antibomberman;
 		balloon = (int) Math.floor(Math.random()*10 + 1);  
-		//slime = (level > 0 || (level+1)%4 == 0) ? ((level + 1)/4  + 1) : 0; //must be in levels 2, 4, 8, 12, 16, 20, etc... and behave like f(2) = 1, f(4) = 2, f(8) = 3, f(12) = 4, f(16) = 5, etc
 		slime = 0;
 		if(level > 0){
-			if(level == 1){
-				slime = 1;
-			}else if (((level+1)%4) == 0){
-				slime = 1 + (level+1)/4;
-			}
+			slime = 1 + (level+1)/4;
 		}
 		antibomberman = Math.random()*100 < 1 ? 1 : 0;
 
@@ -216,7 +211,10 @@ public class Map{
 	public String consumeUpgradeAt(int x, int y){
 		Upgrade upg = (Upgrade) map[x][y];
 		String type = upg.getUpgradeType();
-		if (!type.equals("door")) map[x][y] = new Tile("green");
+		if (!type.equals("door")){
+			map[x][y] = new Tile("green");
+			upgrades[x][y] = null;
+		}
 		return type;
 	}
 	public String consumeUpgradeAt(Coordinates coords){
@@ -259,6 +257,9 @@ public class Map{
 		return getSpriteAt(coords.x, coords.y);
 	}
 	public String getSpriteAt(int x, int y){
+		if(explore && upgrades[x][y] != null){
+			return new Upgrade(upgrades[x][y]).getSprite();
+		}
 		return map[x][y].getSprite();
 	}
 
@@ -279,5 +280,7 @@ public class Map{
 	public String[][] getEnemiesPos() {
 		return enemies;
 	}
-
+	public void toggleExploreMode(){
+		explore = !explore;
+	}
 }

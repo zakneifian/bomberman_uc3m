@@ -4,7 +4,7 @@ import uc3m.bomberman.map.*;
 
 public abstract class MovableEntity extends Entity{
 
-	protected int speed = 2;
+	protected int speed = 1;
 
 	private int spritePhase = 1;
 	private String[] entityDir = new String[] {"down", "down"}; //previous movement, present movement

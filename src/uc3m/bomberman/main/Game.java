@@ -4,31 +4,60 @@ import uc3m.bomberman.entity.*;
 import uc3m.bomberman.map.*;
 
 public class Game{
+	private static final long MIN_TIME = 3*60*1000; //TODO 3 minutes
+	
 	private Map[] map = new Map[15];
 	private Entity[] entities;
 	private Player player;
 	private int level = 0; //TODO arreglar bug que no permite iniciar en niveles altos
 	private String playerAction;
+	private long mapTime;
 	
-	public Game(int dim, String playerName){
-		//Generate upgrades of each level
+	public Game(int dim, String playerName, int nLevels){		
 		if(playerName == null || playerName.equals(""))
 			playerName = "Bomberman";
+		
 		player = new Player(Main.nextId(), playerName);
-		map[0] = new Map(dim, 0, getPlayerPersonalSpace(player));
+		
+		if(nLevels > 0)
+			map = new Map[nLevels];
+		for(int ii = 0; ii < map.length; ii++){
+			map[ii] = new Map(Main.DIMENSION, ii, getPlayerPersonalSpace(player));
+		}
+		
 		entities = new Entity[1];
 		entities[0] = player;
+		mapTime = System.currentTimeMillis();
+		
 		spawnEnemies();
 	}
 	public Map getMap(){
 		return map[level];
+	}
+	public void recreateCurrentLevel(){
+		map[level] = new Map(Main.DIMENSION, level, getPlayerPersonalSpace(player));
+		clearEntities();
+		spawnEnemies();
 	}
 	public boolean nextMap(){
 		if(++level >= map.length){
 			level--;
 			return false;
 		}
-		map[level] = new Map(Main.DIMENSION, level, getPlayerPersonalSpace(player));
+		
+		if(MIN_TIME -(System.currentTimeMillis() - mapTime)  > 0)
+			player.addScore((int) (MIN_TIME -(System.currentTimeMillis() - mapTime)));
+		mapTime = 0;
+		clearEntities();
+		spawnEnemies();
+		return true;
+	}
+	public boolean setMap(int level){
+		if(level < 0 || level >= map.length){
+			return false;
+		}
+		this.level = level;
+		clearEntities();
 		spawnEnemies();
 		return true;
 	}
@@ -69,6 +98,11 @@ public class Game{
 		}
 		return false;
 	}
+	public void clearEntities(){
+		Entity[] aux = new Entity[1];
+		aux[0] = player;
+		entities = aux;
+	}
 	public void spawnEnemies() {
 		for (int ii = 0; ii < getMap().getEnemiesPos().length; ii++) {
 			for (int jj = 0; jj < getMap().getEnemiesPos()[ii].length; jj++) {
@@ -85,6 +119,9 @@ public class Game{
 				}
 			}
 		}
+	}
+	public int getMaxLevel(){
+		return map.length;
 	}
 	public void explodeAt(Coordinates bombPos){
 		int explosionLength = getPlayer().getRange();
@@ -141,7 +178,8 @@ public class Game{
 		return level;
 	}
 	public Coordinates[] getPlayerPersonalSpace(Player player) {
-		Coordinates[] playerPersonalSpace = new Coordinates[] {new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y + 1), 
+		Coordinates[] playerPersonalSpace = new Coordinates[] {
+				   new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y + 1), 
 				   new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y     ),
 				   new Coordinates(player.getPosition().tenthsToUnits().x - 1, player.getPosition().tenthsToUnits().y - 1),
 				   new Coordinates(player.getPosition().tenthsToUnits().x     , player.getPosition().tenthsToUnits().y + 1),
