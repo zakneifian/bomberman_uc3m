@@ -1,5 +1,6 @@
 package uc3m.bomberman.map;
 
+//TODO javadoc
 public class Map{
 	public static final int NBRICKS = 50;
 	
@@ -10,9 +11,9 @@ public class Map{
 	
 	private boolean explore = false;
 	
-	public Map(int dim, int level, Coordinates[] playerPersonalSpace){
+	public Map(int dim, int level, Coordinates restrictedSquare){
 		this.dim = new Coordinates(dim, dim);
-		createMap(playerPersonalSpace, level);
+		createMap(getPlayerPersonalSpace(restrictedSquare), level);
 	}
 	private void createMap(Coordinates[] playerPersonalSpace, int level){
 		map = new Tile[dim.x][dim.y];
@@ -62,7 +63,6 @@ public class Map{
 					Explosion explosion = (Explosion) map[ii][jj];
 					if(explosion.tick()){
 						map[ii][jj] = new Tile("green");
-						//TODO UPGRADE Aquí desaparecen las explosiones, así que:
 						if(upgrades[ii][jj] != null){
 							map[ii][jj] = new Upgrade(upgrades[ii][jj]);
 						}
@@ -159,7 +159,7 @@ public class Map{
 		if(level > 0){
 			slime = 1 + (level+1)/4;
 		}
-		antibomberman = Math.random()*100 < 1 ? 1 : 0;
+		antibomberman = Math.random()*10 < 1 ? 1 : 0;
 
 		while(balloon > 0){
 			for(int ii = 0; ii < enemies.length; ii++){
@@ -206,6 +206,16 @@ public class Map{
 	}
 	public String getTypeAt(Coordinates coords){
 		return getTypeAt(coords.x, coords.y);
+	}
+	public Coordinates getDoorSquare(){
+		for(int ii = 0; ii < upgrades.length; ii++){
+			for(int jj = 0; jj < upgrades[ii].length; jj++){
+				if(upgrades[ii][jj] != null && upgrades[ii][jj].equals("door")){
+					return new Coordinates(ii, jj);
+				}
+			}
+		}
+		return new Coordinates(1, 1);
 	}
 	//Get upgrade type
 	public String consumeUpgradeAt(int x, int y){
@@ -262,14 +272,18 @@ public class Map{
 		}
 		return map[x][y].getSprite();
 	}
-
-	public Tile getTileAt(Coordinates coords) {
-		return getTileAt(coords.x, coords.y);
-	}
-	
-	public Tile getTileAt(int x, int y) {
-		return map[x][y]; //TODO bug cuyo motivo no se que triggerea al explotar
-
+	private Coordinates[] getPlayerPersonalSpace(Coordinates restrictedSquare) {
+		Coordinates[] playerPersonalSpace = new Coordinates[] {
+				   new Coordinates(restrictedSquare.x - 1, restrictedSquare.y + 1), 
+				   new Coordinates(restrictedSquare.x - 1, restrictedSquare.y     ),
+				   new Coordinates(restrictedSquare.x - 1, restrictedSquare.y - 1),
+				   new Coordinates(restrictedSquare.x     , restrictedSquare.y + 1),
+				   new Coordinates(restrictedSquare.x     , restrictedSquare.y     ),
+				   new Coordinates(restrictedSquare.x     , restrictedSquare.y - 1),
+				   new Coordinates(restrictedSquare.x + 1, restrictedSquare.y + 1),
+				   new Coordinates(restrictedSquare.x + 1, restrictedSquare.y     ),
+				   new Coordinates(restrictedSquare.x + 1, restrictedSquare.y - 1)};
+		return playerPersonalSpace;
 	}
 	private boolean isInPlayerPersonalSpace(Coordinates[] playerPersonalSpace, Coordinates coords) {
 		for (int ii = 0; ii < playerPersonalSpace.length; ii++ ) {

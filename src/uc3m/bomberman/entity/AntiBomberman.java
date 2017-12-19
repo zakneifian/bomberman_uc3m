@@ -2,7 +2,7 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-
+//TODO javadoc
 public class AntiBomberman extends Enemy {
 
 	public AntiBomberman(int id, Coordinates position) {
@@ -38,16 +38,29 @@ public class AntiBomberman extends Enemy {
 		}
 		
 	}
-
-	public boolean putBomb(){
-		return true;
-	}
 	@Override
 	public void moveEnemy(Game game) {
-		String action = game.getPlayerAction();
-		moveEnemyAction(game, action);
+		this.speed = game.getPlayer().getSpeed();
+		String lastAction;
+		switch(game.getPlayerAction()){
+		case "down":
+			lastAction = "up";
+			break;
+		case "left":
+			lastAction = "right";
+			break;
+		case "right":
+			lastAction = "left";
+			break;
+		case "up":
+			lastAction = "down";
+			break;
+		default:
+			lastAction = "";
+		}
+		moveEnemyAction(game, lastAction);
 	}
-	public void moveEnemyAction(Game game, String lastAction){
+	private void moveEnemyAction(Game game, String lastAction){
 		if(lastAction.length() > 0 && this.isAlive() && game.getPlayer().isAlive()){ 
 			//if movement
 			if (lastAction.equals("up") || lastAction.equals("down") || lastAction.equals("left") || lastAction.equals("right")) {
@@ -74,9 +87,6 @@ public class AntiBomberman extends Enemy {
 				this.moveTowards(Direction.RIGHT, game.getMap());
 				if(this.collides(game.getMap()))
 					this.moveTowards(Direction.LEFT, game.getMap());
-			case "space":
-				if (this.putBomb()) {
-				}
 			}
 		}
 	}
@@ -84,6 +94,9 @@ public class AntiBomberman extends Enemy {
 	@Override
 	public int getScoreOnDeath() {
 		return 500;
+	}
+	public String toString(){
+		return "AntiBomberman (id "+super.toString()+")";
 	}
 	
 }

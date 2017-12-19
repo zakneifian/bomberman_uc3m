@@ -1,7 +1,7 @@
 package uc3m.bomberman.entity;
 
 import uc3m.bomberman.map.*;
-
+//TODO javadoc
 public class Player extends MovableEntity{
 	private int bombs = 1;
 	private int maxBombs = 1;

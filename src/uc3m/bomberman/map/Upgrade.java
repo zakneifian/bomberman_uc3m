@@ -1,5 +1,5 @@
 package uc3m.bomberman.map;
-
+//TODO javadoc
 public class Upgrade extends Tile{
 	private final char[] UPG_TYPE = {'B', 'F', 'S', 'R', 'K', 'G', 'D'};
 	private char type;
@@ -7,7 +7,6 @@ public class Upgrade extends Tile{
 	public Upgrade(String type) {
 		super("green");
 		setUpgradeType(type);
-		// TODO UPGRADE Esta clase más o menos como la de Explosion: que almacene el tipo de upgrade y su sprite. Que los efectos los gestione Player.
 	}
 	
 	private void setUpgradeType(String type){

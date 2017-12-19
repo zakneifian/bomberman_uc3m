@@ -7,14 +7,27 @@ package uc3m.bomberman.map;
 public class Coordinates{
 	public int x;
 	public int y;
-	public Coordinates(){}
+	/**
+	 * Empty constructor
+	 * @param tenths
+	 */
+	public Coordinates(boolean tenths){}
+	/**
+	 * Full constructor
+	 */
 	public Coordinates(int x, int y){
 		this.x = x > 0 ? x : 0;
 		this.y = y > 0 ? y : 0;
 	}
+	/**
+	 * @return new object with the units from tenths of tile to whole squares
+	 */
 	public Coordinates tenthsToUnits(){
 		return new Coordinates(((x+4)/10), (y+8)/10);
 	}
+	/**
+	 * @return new object with the units from whole squares to tenths of tile 
+	 */
 	public Coordinates unitsToTenths(){
 		return new Coordinates(x*10, y*10);
 	}

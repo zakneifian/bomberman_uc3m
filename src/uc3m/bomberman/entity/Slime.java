@@ -2,11 +2,11 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-
+//TODO javadoc
 public class Slime extends Enemy {
 
 	public Slime(int id, Coordinates position) {
-		super(id, "enemy211.png", 100, position, 3, 4);
+		super(id, "enemy211.png", 100, position, 3, 10);
 		this.speed = 1;
 	}
 
@@ -35,6 +35,9 @@ public class Slime extends Enemy {
 	@Override
 	public int getScoreOnDeath() {
 		return 250;
+	}
+	public String toString(){
+		return "Slime (id "+super.toString()+")";
 	}
 	
 }

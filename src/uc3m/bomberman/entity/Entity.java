@@ -1,7 +1,12 @@
 package uc3m.bomberman.entity;
 
 import uc3m.bomberman.map.*;
-
+/**
+ * This class represents an entity in the game, with and id and a position. Entities do not necessarily move.
+ * @author Daniel Alacide Nombela, Alejandro Martínez Riera
+ * @see <code>{@link MovableEntity}</code>
+ *
+ */
 public class Entity{
 	private int id = 1;
 	private String sprite;
@@ -45,7 +50,7 @@ public class Entity{
 	}
 	
 	/**
-	 * 
+	 * Damages the entity by <code>dmg</code> health points
 	 * @param dmg
 	 * @return true if the entity was killed, false otherwise
 	 */
@@ -58,9 +63,17 @@ public class Entity{
 			}
 		}
 	}
+	/**
+	 * Set the entity dead
+	 */
 	public void kill(){
 		alive = false;
 	}
+	
+	/**
+	 * Heals the entity by <code>heal</code> health points
+	 * @param heal
+	 */
 	public void takeHeal(int heal){
 		if(heal > 0){
 			hp += heal;
@@ -69,6 +82,11 @@ public class Entity{
 			}
 		}
 	}
+	/**
+	 * Two entities are the same if their id is the same
+	 * @param other
+	 * @return
+	 */
 	public boolean equals(Entity other){
 		return this.id == other.id;
 	}
@@ -84,6 +102,9 @@ public class Entity{
 	public String getSprite(){
 		return sprite;
 	}
+	/**
+	 * @return NEW <code>{@link Coordinates}</code> object. Changing the returned object will not change the entitie's position
+	 */
 	public Coordinates getPosition(){
 		return new Coordinates(position.x, position.y);
 	}
@@ -95,6 +116,10 @@ public class Entity{
 	}
 	public int getHp() {
 		return hp;
+	}
+	//toString
+	public String toString(){
+		return ""+id;
 	}
 
 }

@@ -3,7 +3,7 @@ package uc3m.bomberman.entity;
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
 import uc3m.bomberman.map.Map;
-
+//TODO javadoc
 public abstract class Enemy extends MovableEntity{
 	int damagetoPlayer;
 	public Enemy(int id, String path, int maxHp, Coordinates position, int spriteRgQty, int damageToPlayer) {

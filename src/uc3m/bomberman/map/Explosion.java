@@ -1,7 +1,7 @@
 package uc3m.bomberman.map;
 
 import uc3m.bomberman.main.Main;
-
+//TODO javadoc
 public class Explosion extends Tile {
 	private final char[] EXP_TYPE = {'C', 'N', 'E', 'W', 'S', 'H', 'V'};
 	private char type;

@@ -1,5 +1,5 @@
 package uc3m.bomberman.map;
-
+//TODO javadoc
 public class Tile{
 	
 	private final char TILE_TYPE[] = {'B', 'W', 'G'}; // 0- brick; 1- Wall; 2- Green; 4- Explosion

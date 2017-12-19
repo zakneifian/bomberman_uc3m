@@ -1,7 +1,7 @@
 package uc3m.bomberman.entity;
 
 import uc3m.bomberman.map.*;
-
+//TODO javadoc
 public abstract class MovableEntity extends Entity{
 
 	protected int speed = 1;

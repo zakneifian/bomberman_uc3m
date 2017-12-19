@@ -2,7 +2,7 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Main;
 import uc3m.bomberman.map.*;
-
+//TODO javadoc
 public class Bomb extends Entity{
 	private final int TICK_TIME = 100;
 	private int maxTicks = (int) (Main.BOMB_TIME/TICK_TIME);

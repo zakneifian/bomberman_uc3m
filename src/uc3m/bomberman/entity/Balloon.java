@@ -2,7 +2,7 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-
+//TODO javadoc
 public class Balloon extends Enemy {
 	
 	private int dir;
@@ -11,7 +11,7 @@ public class Balloon extends Enemy {
 	private long time;
 	
 	public Balloon(int id, Coordinates position) {
-		super(id, "enemy111.png", 50, position, 3, 2);
+		super(id, "enemy111.png", 50, position, 3, 5);
 		speed = 1;
 		time = System.currentTimeMillis();
 	}
@@ -59,6 +59,9 @@ public class Balloon extends Enemy {
 	@Override
 	public int getScoreOnDeath() {
 		return 100;
+	}
+	public String toString(){
+		return "Balloon (id "+super.toString()+")";
 	}
 	
 }
