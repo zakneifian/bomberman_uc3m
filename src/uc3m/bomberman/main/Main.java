@@ -150,60 +150,61 @@ public class Main{
 	public static String eventHandler(Game game, GameBoardGUI board){
 		String action = board.gb_getLastAction().trim();
 		game.setPlayerAction(action);
-		if(action.length() > 0 && game.getPlayer().isAlive()){ 
-			//if movement
-			if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
-				game.getPlayer().setEntityDir(action);
-				game.getPlayer().animateMovement(game.getPlayer().getSpritePhase(), game.getPlayer().getEntityDir());
-			}
-			switch(action){
-			case "up":
-				game.getPlayer().moveTowards(Direction.UP, game.getMap());
-				if(game.getPlayer().collides(game.getMap()))
-					game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
-				break;
-			case "down":
-				game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
-				if(game.getPlayer().collides(game.getMap()))
-					game.getPlayer().moveTowards(Direction.UP, game.getMap());
-				break;
-			case "left":
-				game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
-				if(game.getPlayer().collides(game.getMap()))
-					game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
-				break;
-			case "right":
-				game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
-				if(game.getPlayer().collides(game.getMap()))
-					game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
-				break;
-			case "space":
-				if (game.getPlayer().putBomb()) {
-					addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
-					for (int ii = 0; ii < game.getEntities().length; ii++){
-						Entity current = game.getEntities()[ii];
-						if (current instanceof AntiBomberman) addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
-					}
+		if(action.length() > 0){ 
+			if (game.getPlayer().isAlive()) {
+				//if movement
+				if (action.equals("up") || action.equals("down") || action.equals("left") || action.equals("right")) {
+					game.getPlayer().setEntityDir(action);
+					game.getPlayer().animateMovement(game.getPlayer().getSpritePhase(), game.getPlayer().getEntityDir());
 				}
-				break;
-			case "tab":
-				detonateAllBombs(game, board);
-				break;
-			default:
-				if(action.contains("command ")){
-					try{
-						String command = action.substring(8);
-						commandParser(game, board, command);
-					}catch(Exception ex){
-						ex.printStackTrace();
+				switch(action){
+				case "up":
+					game.getPlayer().moveTowards(Direction.UP, game.getMap());
+					if(game.getPlayer().collides(game.getMap()))
+						game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
+					break;
+				case "down":
+					game.getPlayer().moveTowards(Direction.DOWN, game.getMap());
+					if(game.getPlayer().collides(game.getMap()))
+						game.getPlayer().moveTowards(Direction.UP, game.getMap());
+					break;
+				case "left":
+					game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
+					if(game.getPlayer().collides(game.getMap()))
+						game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
+					break;
+				case "right":
+					game.getPlayer().moveTowards(Direction.RIGHT, game.getMap());
+					if(game.getPlayer().collides(game.getMap()))
+						game.getPlayer().moveTowards(Direction.LEFT, game.getMap());
+					break;
+				case "space":
+					if (game.getPlayer().putBomb()) {
+						addEntity(game, board, new Bomb(nextId(), game.getPlayer().getPosition().tenthsToUnits().unitsToTenths()));
+						for (int ii = 0; ii < game.getEntities().length; ii++){
+							Entity current = game.getEntities()[ii];
+							if (current instanceof AntiBomberman) addEntity(game, board, new Bomb(nextId(), ((AntiBomberman) current).getPosition().tenthsToUnits().unitsToTenths()));
+						}
 					}
-				}else if(action.contains("new game ")){
-					try{
-						String gameName = action.substring(9);
-						return gameName;
-					}catch(Exception ex){
-						ex.printStackTrace();
-					}
+					break;
+				case "tab":
+					detonateAllBombs(game, board);
+					break;
+				}
+			}
+			if(action.contains("command ")){
+				try{
+					String command = action.substring(8);
+					commandParser(game, board, command);
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}else if(action.contains("new game ")){
+				try{
+					String gameName = action.substring(9);
+					return gameName;
+				}catch(Exception ex){
+					ex.printStackTrace();
 				}
 			}
 		}
@@ -359,7 +360,7 @@ public class Main{
 					int level = Integer.parseInt(command.substring(5))-1;
 					game.setMap(level);
 					loadEntities(game, board);
-					board.gb_println("Loaded level "+level);
+					board.gb_println("Loaded level "+ (level + 1));
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
