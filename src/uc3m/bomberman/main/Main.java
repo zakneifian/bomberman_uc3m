@@ -229,27 +229,27 @@ public class Main{
 					if(game.getPlayer().isRemote())
 						detonateAllBombs(game, board);
 					break;
-				default:
-					if(action.contains("command ")){
-						//Commands
-						try{
-							String command = action.substring(8);
-							commandParser(game, board, command);
-						}catch(Exception ex){
-							ex.printStackTrace();
-						}
-					}else if(action.contains("new game ")){
-						//New game button
-						try{
-							String gameName = action.substring(9);
-							return gameName;
-						}catch(Exception ex){
-							ex.printStackTrace();
-						}
-					}else if(action.contains("exit")){
-						closed = true;
-					}
 				}
+			}
+			//Actions outside the player
+			if(action.contains("command ")){
+				//Commands
+				try{
+					String command = action.substring(8);
+					commandParser(game, board, command);
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}else if(action.contains("new game ")){
+				//New game button
+				try{
+					String gameName = action.substring(9);
+					return gameName;
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}else if(action.contains("exit")){
+				closed = true;
 			}
 		}
 		return "";
