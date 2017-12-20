@@ -1,4 +1,7 @@
 package uc3m.bomberman.map;
+
+import uc3m.bomberman.entity.Enemy;
+
 /**
  * This record stores two integers representing coordinates
  * @author danoloan10
@@ -31,6 +34,11 @@ public class Coordinates{
 	public Coordinates unitsToTenths(){
 		return new Coordinates(x*10, y*10);
 	}
+
+	/**
+	 * @param coords
+	 * @return true if the <code>{@link Coordinates}</code> are equal
+	 */
 	public boolean equals(Coordinates coords){
 		return this.x == coords.x && this.y == coords.y;
 	}

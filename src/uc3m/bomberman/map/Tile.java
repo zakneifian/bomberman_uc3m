@@ -1,11 +1,18 @@
 package uc3m.bomberman.map;
-//TODO javadoc
+/**
+ * This class holds all the methods and information regarding each Tile of the map
+ *
+ */
 public class Tile{
 	
 	private final char TILE_TYPE[] = {'B', 'W', 'G'}; // 0- brick; 1- Wall; 2- Green; 4- Explosion
 	private char type;
 	private boolean walkable;
 	
+	/**
+	 * Full constructor <code>{@link Tile}</code> constructor
+	 * @param type
+	 */
 	public Tile(String type){
 		setType(type);
 	}
@@ -30,6 +37,9 @@ public class Tile{
 			walkable = true;
 		}
 	}
+	/**
+	 * @return the type of the <code>{@link Tile}</code>
+	 */
 	public String getType(){
 		switch(type){
 		case 'B':
@@ -42,9 +52,15 @@ public class Tile{
 			return "wall";
 		}
 	}
+	/**
+	 * @return true if <code>{@link Tile}</code> is walkable
+	 */
 	public boolean isWalkable() {
 		return walkable;
 	}
+	/**
+	 * @return the String path of the sprite of certain <code>{@link Tile}</code>
+	 */
 	public String getSprite() {
 		switch(type){
 		case 'G':

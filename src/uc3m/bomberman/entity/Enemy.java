@@ -2,18 +2,36 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-import uc3m.bomberman.map.Map;
-//TODO javadoc
+/**
+ * This class extends the <code>{@link MovableEntity}</code> and has the methods
+ * concerning to the enemies, to be able to move, collision, damage the player, etc
+ *
+ */
 public abstract class Enemy extends MovableEntity{
 	int damagetoPlayer;
+	/**
+	 * Full constructor
+	 * @param id
+	 * @param path
+	 * @param maxHp
+	 * @param position
+	 * @param spriteRgQty
+	 * @param damageToPlayer
+	 */
 	public Enemy(int id, String path, int maxHp, Coordinates position, int spriteRgQty, int damageToPlayer) {
 		super(id, path, maxHp, position, spriteRgQty);
 		this.damagetoPlayer = damageToPlayer;
 	}
+	/**
+	 * @return the damage inflicted to the player by the <code>{@link Enemy}</code>
+	 */
 	public int getDamagetoPlayer() {
 		return damagetoPlayer;
 	}
 	
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.MovableEntity#onCollision(uc3m.bomberman.entity.Entity)
+	 */
 	@Override
 	public void onCollision(Entity col) {
 		if(col instanceof Player && alive){
@@ -21,8 +39,19 @@ public abstract class Enemy extends MovableEntity{
 		}		
 	}
 	
+	/**
+	 * Handles the <code>{@link Enemy}</code> movement, implemented on each specific enemy
+	 * for their particular ways of moving
+	 * @param game
+	 */
 	public abstract void moveEnemy(Game game);
+	/**
+	 * @return the score given to the player when the <code>{@link Enemy}</code> dies
+	 */
 	public abstract int getScoreOnDeath();
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.MovableEntity#animateMovement(int, java.lang.String[])
+	 */
 	@Override
 	public void animateMovement(int spritePhase, String[] entityDir) {
 		if (entityDir[1].equals(entityDir[0])) { //if the present movement equals the past one

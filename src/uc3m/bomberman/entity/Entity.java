@@ -3,7 +3,8 @@ package uc3m.bomberman.entity;
 import uc3m.bomberman.map.*;
 /**
  * This class represents an entity in the game, with and id and a position. Entities do not necessarily move.
- * @author Daniel Alacide Nombela, Alejandro Martínez Riera
+ * @author Daniel Alacide Nombela
+ * @author Alejandro Martínez Riera
  * @see <code>{@link MovableEntity}</code>
  *
  */

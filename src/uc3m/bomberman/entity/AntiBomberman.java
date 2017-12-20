@@ -2,13 +2,27 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-//TODO javadoc
+
+/**
+ * This class overrides some unimplemented
+ * methods of <code>{@link Enemy}</code>
+ * and creates the object for AntiBomberman
+ *
+ */
 public class AntiBomberman extends Enemy {
 
+	/**
+	 * Full constructor
+	 * @param id
+	 * @param position
+	 */
 	public AntiBomberman(int id, Coordinates position) {
 		super(id, "Antibomberman111.png", 1000, position, 3, 50);
 	}
 	
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Enemy#animateMovement(int, java.lang.String[])
+	 */
 	@Override
 	public void animateMovement(int spritePhase, String[] entityDir) {
 		if (entityDir[1].equals(entityDir[0])) { //if the present movement equals the past one
@@ -38,6 +52,9 @@ public class AntiBomberman extends Enemy {
 		}
 		
 	}
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Enemy#moveEnemy(uc3m.bomberman.main.Game)
+	 */
 	@Override
 	public void moveEnemy(Game game) {
 		this.speed = game.getPlayer().getSpeed();
@@ -60,6 +77,11 @@ public class AntiBomberman extends Enemy {
 		}
 		moveEnemyAction(game, lastAction);
 	}
+	/**
+	 * Copies the <code>{@link Player}</code>'s actions regarding the movement
+	 * @param game
+	 * @param lastAction
+	 */
 	private void moveEnemyAction(Game game, String lastAction){
 		if(lastAction.length() > 0 && this.isAlive() && game.getPlayer().isAlive()){ 
 			//if movement
@@ -91,10 +113,16 @@ public class AntiBomberman extends Enemy {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Enemy#getScoreOnDeath()
+	 */
 	@Override
 	public int getScoreOnDeath() {
 		return 500;
 	}
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Entity#toString()
+	 */
 	public String toString(){
 		return "AntiBomberman (id "+super.toString()+")";
 	}

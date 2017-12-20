@@ -1,7 +1,11 @@
 package uc3m.bomberman.entity;
 
 import uc3m.bomberman.map.*;
-//TODO javadoc
+/**
+ * This class extends the <code>{@link Entity}</code> and holds the methods
+ * neccesary for every movable entity such as the enemies and the player.
+ *
+ */
 public abstract class MovableEntity extends Entity{
 
 	protected int speed = 1;
@@ -10,6 +14,14 @@ public abstract class MovableEntity extends Entity{
 	private String[] entityDir = new String[] {"down", "down"}; //previous movement, present movement
 	private int spriteRgQty; //how much sprites does an entity have for certain movements
 	
+	/**
+	 * Full constructor
+	 * @param id
+	 * @param path
+	 * @param maxHp
+	 * @param position
+	 * @param spriteRgQty
+	 */
 	public MovableEntity(int id, String path, int maxHp, Coordinates position, int spriteRgQty) {
 		super(id, path, maxHp, position);
 		this.spriteRgQty = spriteRgQty;
@@ -22,10 +34,11 @@ public abstract class MovableEntity extends Entity{
 	public abstract void onCollision(Entity col);
 	
 	/**
-	 * Moves the entity's coordinates towards a direction
-	 * @param dir
+	 * Animates the movement of the <code>{@link MovableEntity}</code> when actually moving towards
+	 * certain direction
+	 * @param spritePhase
+	 * @param entityDir
 	 */
-
 	public void animateMovement(int spritePhase, String[] entityDir) {
 		if (entityDir[1].equals(entityDir[0])) { //if the present movement equals the past one
 			if (getSpritePhase() < getSpriteRgQty()) { //if the phase is lower than its range limit of movement
@@ -54,7 +67,12 @@ public abstract class MovableEntity extends Entity{
 		}
 		
 	}
-	
+
+	/**
+	 * Moves the <code>{@link MovableEntity}</code> towards a certain direction
+	 * @param dir
+	 * @param map
+	 */
 	public void moveTowards(Direction dir, Map map){
 		switch(dir){
 		case UP:
@@ -72,25 +90,50 @@ public abstract class MovableEntity extends Entity{
 		}
 	}
 	
+	/**
+	 * @return the speed of the movable entity. This regards to the distance that it is able to travel
+	 * in a certain amount of time
+	 */
 	public int getSpeed() {
 		return speed;
 	}
+	/**
+	 * @return the spritePhase
+	 */
 	public int getSpritePhase() {
 		return spritePhase;
 	}
+	/**
+	 * Sets the actual sprite phase, must be lower or equal to the SpriteRgQty
+	 * @param spritePhase
+	 */
 	public void setSpritePhase(int spritePhase) {
 		this.spritePhase = spritePhase;
 	}
+	/**
+	 * @return a String[] array consisted of the previous direction and the present one (can be the same)
+	 */
 	public String[] getEntityDir() {
 		return entityDir;
 	}
+	/**
+	 * Sets the new direction of a movable entity, still remembering the previous direction
+	 * @param entityDir
+	 */
 	public void setEntityDir(String entityDir) {
 		this.entityDir[0] = this.entityDir[1];
 		this.entityDir[1] = entityDir;
 	}
+	/**
+	 * @return the range length of sprites for certain entity; related to movement
+	 */
 	public int getSpriteRgQty() {
 		return spriteRgQty;
 	}
+	/**
+	 * Sets the range length of sprites for certain entity; related to movement
+	 * @param spriteRgQty
+	 */
 	public void setSpriteRgQty(int spriteRgQty) {
 		this.spriteRgQty = spriteRgQty;
 	}

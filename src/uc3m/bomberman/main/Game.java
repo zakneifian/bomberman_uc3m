@@ -209,18 +209,34 @@ public class Game{
 	}
 
 
+	/**
+	 * @return a <code>{@link Entity}</code> array with every Entity currently active on the map.
+	 */
 	public Entity[] getEntities(){
 		return entities;
 	}
+	/**
+	 * @return the <code>{@link Player}</code> object
+	 */
 	public Player getPlayer(){
 		return player;
 	}
+	/**
+	 * @return the current level
+	 */
 	public int getLevel(){
 		return level;
 	}
+	/**
+	 * @return the current player keyboard press/action
+	 */
 	public String getPlayerAction(){
 		return playerAction;
 	}
+	/**
+	 * Sets the current player keyboard press/action
+	 * @param action
+	 */
 	public void setPlayerAction(String action){
 		playerAction = action;
 	}

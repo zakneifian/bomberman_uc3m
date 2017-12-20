@@ -324,17 +324,19 @@ public class Main{
 	 * @see <code>{@link #loadEntities(Game, GameBoardGUI)}</code>
 	 */
 	public static void checkIfNextLevel(Game game, GameBoardGUI board) {
-		if (!game.getPlayer().getEnemiesAlive() && game.getPlayer().getOpenedDoorOnTouch()) {
-			game.getPlayer().setOpenedDoorOnTouch(false);
-			int bonus = game.nextMap();
-			if(bonus == -1)
-				win(game, board);
-			else{
-				board.gb_println("You headed into the next level. Bonus score: "+bonus+" points.");
-				loadEntities(game, board);
+		if (game.getPlayer().getDoorOnTouch()) {
+			if (!game.getPlayer().getEnemiesAlive()) {
+				int bonus = game.nextMap();
+				if(bonus == -1)
+					win(game, board);
+				else{
+					board.gb_println("You headed into the next level. Bonus score: "+bonus+" points.");
+					loadEntities(game, board);
+				}
 			}
+			else board.gb_println("Door closed; there are enemies alive!");
+			game.getPlayer().setDoorOnTouch(false);
 		}
-		//TODO que la consola te diga que hay enemigos cuando no puedes cruzar la puerta
 	}
 	/**
 	 * Loads the menu and sets <code>board</code> visible

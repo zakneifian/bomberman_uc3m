@@ -2,7 +2,13 @@ package uc3m.bomberman.entity;
 
 import uc3m.bomberman.main.Game;
 import uc3m.bomberman.map.Coordinates;
-//TODO javadoc
+
+/**
+ * This class overrides some unimplemented
+ * methods of <code>{@link Enemy}</code>
+ * and creates the object for Balloon
+ *
+ */
 public class Balloon extends Enemy {
 	
 	private int dir;
@@ -10,12 +16,20 @@ public class Balloon extends Enemy {
 	private final int TICK_TIME = 250;
 	private long time;
 	
+	/**
+	 * Full constructor
+	 * @param id
+	 * @param position
+	 */
 	public Balloon(int id, Coordinates position) {
 		super(id, "enemy111.png", 50, position, 3, 5);
 		speed = 1;
 		time = System.currentTimeMillis();
 	}
 
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Enemy#moveEnemy(uc3m.bomberman.main.Game)
+	 */
 	@Override
 	public void moveEnemy(Game game) {
 		if(time > TICK_TIME){
@@ -56,10 +70,16 @@ public class Balloon extends Enemy {
 			time = System.currentTimeMillis();
 		}
 	}
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Enemy#getScoreOnDeath()
+	 */
 	@Override
 	public int getScoreOnDeath() {
 		return 100;
 	}
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.entity.Entity#toString()
+	 */
 	public String toString(){
 		return "Balloon (id "+super.toString()+")";
 	}

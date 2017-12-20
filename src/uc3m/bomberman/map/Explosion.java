@@ -1,7 +1,10 @@
 package uc3m.bomberman.map;
 
 import uc3m.bomberman.main.Main;
-//TODO javadoc
+/**
+ * This class handles the Explosion sprites for the <code>{@link Tile}</code>s
+ *
+ */
 public class Explosion extends Tile {
 	private final char[] EXP_TYPE = {'C', 'N', 'E', 'W', 'S', 'H', 'V'};
 	private char type;
@@ -13,12 +16,20 @@ public class Explosion extends Tile {
 	private final int MAX_PHASE = 4;
 	private int currentPhase = 0;
 	
+	/**
+	 * Full constructor to set explosions
+	 * @param type
+	 */
 	public Explosion(String type) {
 		super("green");
 		setExplosionType(type);
 		time = System.currentTimeMillis();
 	}
 	
+	/**
+	 * Sets the type of the tile for the sprite of the explosion depending on the direction and position
+	 * @param type
+	 */
 	private void setExplosionType(String type){
 		switch(type.toLowerCase()){
 		case "centre":
@@ -53,6 +64,9 @@ public class Explosion extends Tile {
 		}
 	}
 	
+	/**
+	 * @return true if it's still in the MAX_PHASE, this concerns animation
+	 */
 	public boolean tick(){
 		if(System.currentTimeMillis() - time > TICK_TIME){
 			currentPhase++;
@@ -67,6 +81,9 @@ public class Explosion extends Tile {
 		return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.map.Tile#getSprite()
+	 */
 	@Override
 	public String getSprite(){
 		return "explosion_"+type+(currentPhase+1)+".gif";

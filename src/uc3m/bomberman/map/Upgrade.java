@@ -1,14 +1,26 @@
 package uc3m.bomberman.map;
-//TODO javadoc
+/**
+ * This class extends the <code>{@link Tile}</code> for the sole purpose
+ * of being more specific concerning the Upgrades in the game
+ *
+ */
 public class Upgrade extends Tile{
 	private final char[] UPG_TYPE = {'B', 'F', 'S', 'R', 'K', 'G', 'D'};
 	private char type;
 	
+	/**
+	 * Full <code>{@link Ugrade}</code> constructor
+	 * @param type
+	 */
 	public Upgrade(String type) {
 		super("green");
 		setUpgradeType(type);
 	}
 	
+	/**
+	 * Sets the type of an <code>{@link Upgrade}</code>
+	 * @param type
+	 */
 	private void setUpgradeType(String type){
 		int i = UPG_TYPE.length;
 		switch(type){
@@ -32,6 +44,9 @@ public class Upgrade extends Tile{
 		}
 	}
 	
+	/**
+	 * @return the type of the <code>{@link Upgrade}</code>
+	 */
 	public String getUpgradeType(){
 		switch(type){
 		case 'B':
@@ -52,6 +67,9 @@ public class Upgrade extends Tile{
 		return "null";
 	}
 	
+	/* (non-Javadoc)
+	 * @see uc3m.bomberman.map.Tile#getSprite()
+	 */
 	@Override
 	public String getSprite(){
 		switch(type){
