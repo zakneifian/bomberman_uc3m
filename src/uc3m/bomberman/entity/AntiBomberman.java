@@ -17,7 +17,7 @@ public class AntiBomberman extends Enemy {
 	 * @param position
 	 */
 	public AntiBomberman(int id, Coordinates position) {
-		super(id, "Antibomberman111.png", 1000, position, 3, 50);
+		super(id, "Antibomberman111.png", 500, position, 3, 50);
 	}
 	
 	/* (non-Javadoc)

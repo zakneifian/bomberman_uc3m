@@ -25,6 +25,7 @@ public class Main{
 	
 	private static int NEXT_ID = 0;
 	private static boolean running = true;
+	private static boolean closed = false;
 	
 	/**
 	 * This method generates a new ID for a new entity. This is the method that should be used when assigning id's to new entities
@@ -63,7 +64,7 @@ public class Main{
 		
 		do{
 			//This loop is the game execution
-			while(running){
+			while(running && !closed){
 				if(deltaTimeTick > 1000.0/TPS){ //Ticks
 					String newGameName = tick(game, board);
 					//Check if a new game has been ordered
@@ -91,7 +92,8 @@ public class Main{
 				game = newGame(newGameName, board, NLEVEL);
 				running = true;
 			}
-		}while(true);
+		}while(!closed);
+		System.exit(0);
 		
 	}
 	/**
@@ -244,6 +246,8 @@ public class Main{
 						}catch(Exception ex){
 							ex.printStackTrace();
 						}
+					}else if(action.contains("exit")){
+						closed = true;
 					}
 				}
 			}
@@ -327,9 +331,10 @@ public class Main{
 		if (game.getPlayer().getDoorOnTouch()) {
 			if (!game.getPlayer().getEnemiesAlive()) {
 				int bonus = game.nextMap();
-				if(bonus == -1)
+				if(bonus < 0){
+					board.gb_println("You headed into the next level. Bonus score: "+-bonus+" points.");
 					win(game, board);
-				else{
+				}else{
 					board.gb_println("You headed into the next level. Bonus score: "+bonus+" points.");
 					loadEntities(game, board);
 				}
@@ -532,6 +537,9 @@ public class Main{
 			break;
 		case "win":
 			win(game, board);
+			break;
+		case "exit":
+			closed = true;
 			break;
 		default:
 			if(command.contains("level")){

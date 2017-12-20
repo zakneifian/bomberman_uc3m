@@ -13,6 +13,7 @@ public class Bomb extends Entity{
 	private final int TICK_TIME = 100;
 	private int maxTicks = (int) (Main.BOMB_TIME/TICK_TIME);
 	private long time;
+	private boolean exploded = false;
 	
 	/**
 	 * Full constructor
@@ -40,7 +41,7 @@ public class Bomb extends Entity{
 				return true;
 			}
 		}
-		return false;
+		return exploded;
 	}
 	
 	/* (non-Javadoc)
@@ -48,5 +49,6 @@ public class Bomb extends Entity{
 	 */
 	@Override
 	public void takeDamage(int dmg){
+		exploded = true;
 	}
 }

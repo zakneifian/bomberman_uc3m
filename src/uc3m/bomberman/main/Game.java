@@ -64,24 +64,25 @@ public class Game{
 	}
 	/**
 	 * This method selects the next map
-	 * @return If no more levels are available, -1; if there is one more level, it returns the score associated to the time bonus (1 point per second, up to 3 minutes)
+	 * @return If no more levels are available, -bonus; if there is one more level, it returns the score associated to the time bonus (1 point per second, up to 3 minutes)
 	 */
 	public int nextMap(){
-		if(++level >= map.length){
-			level--;
-			return -1;
-		}
+		int bonus = 0;
 		
-		mapTime = 0;
 		clearEntities();
 		spawnEnemies();
 
 		if(MIN_TIME -(System.currentTimeMillis() - mapTime)  > 0){
-			int bonus = (int) (MIN_TIME -(System.currentTimeMillis() - mapTime))/1000;
+			bonus = (int) (MIN_TIME -(System.currentTimeMillis() - mapTime))/1000;
 			player.addScore(bonus);
-			return bonus;
 		}
-		return 0;
+		player.addScore(bonus);
+		if(++level >= map.length){
+			level--;
+			bonus = -bonus;
+		}			
+		mapTime = System.currentTimeMillis();	
+		return bonus;
 	}
 	/**
 	 * Sets the selected level to <code>level</code>
