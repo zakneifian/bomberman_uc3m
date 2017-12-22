@@ -1,7 +1,5 @@
 package uc3m.bomberman.map;
 
-import uc3m.bomberman.entity.Enemy;
-
 /**
  * This record stores two integers representing coordinates
  * @author danoloan10
