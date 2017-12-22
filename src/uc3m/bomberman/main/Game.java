@@ -77,7 +77,8 @@ public class Game{
 		if(++level >= map.length){
 			level--;
 			nextLevel = false;
-		}			
+		}else
+			nextLevel = true;
 		if(!nextLevel){
 			if(bonus == 0) return -1;
 			else return -bonus;
