@@ -504,7 +504,7 @@ public class Main{
 	 * @return If a new game has been ordered creating, it returns the name of the new game. Else, it returns ""
 	 */
 	public static void commandParser(Game game, GameBoardGUI board, String command){
-		switch(command){
+		switch(command.trim()){
 		case "explore":
 			game.getMap().toggleExploreMode();
 			board.gb_println("Explore mode toggled");
