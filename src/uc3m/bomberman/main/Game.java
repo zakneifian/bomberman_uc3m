@@ -68,16 +68,20 @@ public class Game{
 	 */
 	public int nextMap(){
 		int bonus = 0;
-		
+		boolean nextLevel;
 		if(MIN_TIME -(System.currentTimeMillis() - mapTime)  > 0){
 			bonus = (int) (MIN_TIME -(System.currentTimeMillis() - mapTime))/1000;
 			player.addScore(bonus);
-		}
+		}		
 		player.addScore(bonus);
 		if(++level >= map.length){
 			level--;
-			bonus = -bonus;
+			nextLevel = false;
 		}			
+		if(!nextLevel){
+			if(bonus == 0) return -1;
+			else return -bonus;
+		}
 		mapTime = System.currentTimeMillis();	
 		clearEntities();
 		spawnEnemies();
