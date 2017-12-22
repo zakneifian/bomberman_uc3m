@@ -69,9 +69,6 @@ public class Game{
 	public int nextMap(){
 		int bonus = 0;
 		
-		clearEntities();
-		spawnEnemies();
-
 		if(MIN_TIME -(System.currentTimeMillis() - mapTime)  > 0){
 			bonus = (int) (MIN_TIME -(System.currentTimeMillis() - mapTime))/1000;
 			player.addScore(bonus);
@@ -82,6 +79,8 @@ public class Game{
 			bonus = -bonus;
 		}			
 		mapTime = System.currentTimeMillis();	
+		clearEntities();
+		spawnEnemies();
 		return bonus;
 	}
 	/**
